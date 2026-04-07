@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>real classwork</title>
+    <meta charset="UTF-8">
+    <style>
+        :root { --p: #050505; --s: #9300ee; }
+        html, body { margin:0; padding:0; background:var(--p); color:#fff; font-family:sans-serif; transition: 0.3s; overflow: hidden; height: 100vh; }
+        
+        #tab-bar { 
+            background: var(--p); 
+            border-bottom: 2px solid var(--s); 
+            display: flex; 
+            align-items: flex-end;
+            height: 40px;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        #tab-bar::-webkit-scrollbar { height: 4px; }
+        #tab-bar::-webkit-scrollbar-track { background: #111; }
+        #tab-bar::-webkit-scrollbar-thumb { background: var(--s); border-radius: 2px; }
+        
+        .tab-item {
+            background: #111;
+            border: 1px solid #333;
+            border-bottom: none;
+            padding: 8px 12px;
+            margin: 0 2px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 150px;
+            max-width: 200px;
+            border-radius: 8px 8px 0 0;
+            transition: 0.2s;
+            position: relative;
+            white-space: nowrap;
+            animation: slideIn 0.2s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .tab-item:hover { background: #1a1a1a; }
+        .tab-item.active { 
+            background: var(--p); 
+            border-color: var(--s);
+            border-bottom: 2px solid var(--p);
+            margin-bottom: -2px;
+        }
+        .tab-icon { width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0; }
+        .tab-title { flex: 1; overflow: hidden; text-overflow: ellipsis; font-size: 13px; }
+        .tab-close { width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s; flex-shrink: 0; }
+        .tab-close:hover { background: #ff4444; }
+        .tab-close svg { width: 10px; height: 10px; fill: #fff; }
+        .tab-item.home { min-width: 80px; }
+        
+        #content-area { height: calc(100vh - 40px); position: relative; overflow: hidden; }
+        .tab-content { display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+        .tab-content.active { display: block; }
+        .tab-content iframe { width: 100%; height: 100%; border: none; }
+        
+        .home-ui-element { position: fixed; z-index: 10000; }
+        .home-ui-element.info { bottom: 20px; left: 20px; }
+        .home-ui-element.request { bottom: 70px; left: 20px; }
+        .home-ui-element.version { bottom: 20px; right: 20px; color: #666; font-size: 12px; font-family: monospace; cursor: pointer; transition: color 0.2s; }
+        .home-ui-element.version:hover { color: var(--s); }
+        .home-ui-element .info-btn { margin: 0; cursor: pointer; }
+        .home-ui-element .request-btn { margin: 0; cursor: pointer; }
+        
+        #version-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; align-items:center; justify-content:center; }
+        #version-modal.show { display: flex; animation: fadeIn 0.3s ease-out; }
+        #version-modal.show .box-large { animation: slideUp 0.4s ease-out; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(100vh); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        #home-content { 
+            padding: 60px 40px 60px 160px;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            overflow-y: auto;
+            height: 100%;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        #section-sidebar {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            pointer-events: none;
+        }
+        .section-label {
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: #444;
+            text-transform: uppercase;
+            cursor: pointer;
+            pointer-events: all;
+            transition: color 0.3s, font-weight 0.3s;
+            user-select: none;
+            padding: 6px 0;
+        }
+        .section-label.active {
+            color: var(--s);
+            font-weight: 700;
+        }
+
+        .section-divider {
+            width: 100%;
+            max-width: 1200px;
+            border: none;
+            border-top: 1px solid #222;
+            margin: 40px 0;
+        }
+
+        h1 { color:var(--s) !important; text-shadow:0 0 10px var(--s); letter-spacing:4px; font-weight:300; margin-bottom: 30px; text-align:center; text-transform: uppercase; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fill, 250px); gap:20px; width:100%; max-width:1200px; justify-content:center; }
+        .card { background:#111; border:1px solid #222; border-radius:12px; height:250px; cursor:pointer; overflow:hidden; position:relative; transition:0.3s; }
+        .card:hover { border-color:var(--s); transform:translateY(-5px); box-shadow:0 0 15px var(--s); }
+        .img { width:100%; height:100%; background-size:cover; background-position:center; }
+        .label { position:absolute; bottom:0; width:100%; background:rgba(0,0,0,0.85); padding:10px 0; text-align:center; font-weight:bold; font-size: 14px; z-index: 2; }
+        .card-action { position: absolute; bottom: 40px; display: flex; opacity: 0; transition: 0.2s; z-index: 10; }
+        .card:hover .card-action { opacity: 1; }
+        .edit-pos { left: 10px; }
+        .del-pos { right: 10px; }
+        .mini-btn { background: rgba(0,0,0,0.8); border: 1px solid var(--s); border-radius: 6px; padding: 6px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .mini-btn:hover { background: var(--s); }
+        .mini-btn.del:hover { background: #ff4444; border-color: #ff4444; }
+        .mini-btn svg { fill: #fff; width: 16px; height: 16px; }
+        .card.add-btn-card { border: 2px dashed #333; background: transparent; display: flex; align-items: center; justify-content: center; }
+        .add-icon { font-size: 50px; color: #333; transition: 0.3s; }
+        #modal, #add-modal, #confirm-modal, #notice-modal, #info-modal, #version-modal, #admin-password-modal, #admin-modal, #request-modal, #delete-confirm-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; align-items:center; justify-content:center; }
+        .box-large { background:#111; border:2px solid var(--s); border-radius:16px; width:600px; overflow:hidden; display: flex; flex-direction: column; }
+        .modal-header { padding:25px; background:#1a1a1a; border-bottom:1px solid var(--s); text-align:center; font-size:20px; font-weight:bold; color:var(--s); text-transform: uppercase; }
+        .modal-body { padding:40px; height: 320px; overflow-y: auto; box-sizing: border-box; }
+        .tab-bar-modal { display:flex; background:#1a1a1a; border-bottom:1px solid var(--s); }
+        .tab-modal { flex:1; padding:15px; cursor:pointer; font-size:13px; font-weight:bold; color:#666; text-align:center; }
+        .tab-modal.active { color:var(--s); background:#111; box-shadow: inset 0 -2px 0 var(--s); }
+        label { font-size:11px; color:var(--s); font-weight:bold; display:flex; align-items: center; margin-bottom:10px; text-transform: uppercase; }
+        .required-star { color: #ff4444; margin-left: 4px; font-size: 14px; }
+        input[type="text"], input[type="password"], textarea { width:100%; padding:15px; background:#000; border:1px solid #333; color:#fff; border-radius:8px; margin-bottom:25px; font-size: 16px; box-sizing: border-box; transition: 0.3s; font-family: sans-serif; }
+        textarea { resize: vertical; min-height: 80px; }
+        input[type="text"]:focus, input[type="password"]:focus, textarea:focus { border-color: var(--s); outline: none; }
+        .magical-btn { background:#000; border:1px solid var(--s); color:var(--s); padding:15px; width:100%; cursor:pointer; margin-bottom:25px; font-weight:bold; border-radius:8px; font-size: 16px; }
+        .mini-grid { display:grid; grid-template-columns:repeat(7, 1fr); gap:10px; }
+        .color-sq { width:100%; aspect-ratio:1; border-radius:6px; cursor:pointer; border:2px solid transparent; }
+        .color-sq.active { border-color:#fff; box-shadow:0 0 10px #fff; }
+        
+        .btn-row { display:flex; gap:12px; padding: 25px 40px; background: #111; border-top: 1px solid #222; align-items: center; }
+        .action-btn { flex:1; padding:18px; border-radius:8px; cursor:pointer; font-weight:bold; font-size: 12px; text-transform: uppercase; border: none; transition: 0.2s; white-space: nowrap; }
+        
+        .save-btn { background:var(--s); color:#fff; }
+        .save-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
+        .cancel-btn { background:#222; color:#fff; border: 1px solid #444; }
+        .reset-btn-final { background:transparent; color:#ff4444; border: 1px solid #ff4444; }
+        .confirm-del-btn { background: #ff4444; color: #fff; }
+        
+        .info-btn, .request-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--s); background: transparent; color: var(--s); font-style: italic; font-family: serif; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; margin-top: 5px; }
+        .info-btn:hover, .request-btn:hover { background: var(--s); color: white; box-shadow: 0 0 10px var(--s); }
+        .request-btn { font-style: normal; font-family: sans-serif; font-weight: bold; font-size: 18px; }
+        
+        .success-modal, .error-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10001; align-items: center; justify-content: center; }
+        
+        #settings-trigger { position: absolute; top: 30px; right: 35px; cursor: pointer; z-index: 100; }
+        #settings-trigger svg { fill: var(--s); width: 32px; transition: transform 0.6s ease-in-out; }
+        #settings-trigger:hover svg { transform: rotate(180deg); }
+        #search-trigger { position: absolute; top: 30px; right: 75px; cursor: pointer; z-index: 100; }
+        #search-trigger svg { fill: var(--s); width: 28px; transition: transform 0.3s ease-in-out; }
+        #search-trigger:hover svg { transform: scale(1.1); }
+        #search-container { position: absolute; top: 30px; right: 115px; width: 0; overflow: hidden; transition: width 0.3s ease-in-out; z-index: 99; }
+        #search-container.active { width: 250px; }
+        #search-input { width: 100%; padding: 8px 12px; background: #111; border: 1px solid var(--s); color: #fff; border-radius: 8px; font-size: 14px; box-sizing: border-box; }
+        #search-input:focus { outline: none; box-shadow: 0 0 10px var(--s); }
+        #search-input::placeholder { color: #666; }
+        .tab-content-modal { display:none; }
+        .tab-content-modal.active { display:block; }
+        .secret-apostrophe { cursor: default; }
+        
+        .requests-section { margin-top: 20px; }
+        .request-item { background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin-bottom: 15px; }
+        .request-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .request-game-name { font-size: 16px; font-weight: bold; color: var(--s); }
+        .request-delete-btn { background: #ff4444; border: none; color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; transition: 0.2s; }
+        .request-delete-btn:hover { background: #ff6666; }
+        .request-field { margin-bottom: 10px; font-size: 14px; }
+        .request-field-label { color: #999; display: inline-block; width: 100px; }
+        .request-field-value { color: #fff; }
+        .no-requests { text-align: center; color: #666; padding: 40px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <div id="info-modal">
+        <div class="box-large" style="width: 450px; text-align: center;">
+            <div class="modal-header">TANKA'S WISDOM</div>
+            <div class="modal-body" style="height: auto; padding: 30px;">
+                <p style="margin-bottom: 20px; line-height: 1.5; color: #ccc;">If a game is blocked when opened, try reopening a few times before reporting it to Lord Tanka.</p>
+            </div>
+            <div class="btn-row">
+                <button class="action-btn save-btn" onclick="closeModals()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="success-modal" id="success-modal">
+        <div class="box-large" style="width: 400px; text-align: center;">
+            <div class="modal-header" style="color: #00ff00; border-color: #00ff00;">It worked</div>
+            <div class="modal-body" style="height: auto; padding: 30px;">
+                <p id="success-message" style="margin-bottom: 20px; line-height: 1.5; color: #ccc;">Request sent without blowing up</p>
+            </div>
+            <div class="btn-row">
+                <button class="action-btn save-btn" onclick="closeModals()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="error-modal" id="error-modal">
+        <div class="box-large" style="width: 400px; text-align: center;">
+            <div class="modal-header" style="color: #ff4444; border-color: #ff4444;">✗ ERROR</div>
+            <div class="modal-body" style="height: auto; padding: 30px;">
+                <p id="error-message" style="margin-bottom: 20px; line-height: 1.5; color: #ccc;">Failed to send request. Please try again.</p>
+            </div>
+            <div class="btn-row">
+                <button class="action-btn save-btn" onclick="closeModals()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="request-modal">
+        <div class="box-large" style="width: 500px;">
+            <div class="tab-bar-modal">
+                <div class="tab-modal active" data-tab="request-game-tab">REQUEST GAME</div>
+                <div class="tab-modal" data-tab="report-bug-tab">REPORT BUG</div>
+            </div>
+            <div class="modal-body" style="height: auto; padding: 25px 30px;">
+                <div id="request-game-tab" class="tab-content-modal active">
+                    <label>Game Name <span class="required-star">*</span></label>
+                    <input type="text" id="requestGameName" placeholder="Tanka Jahari Simulator" style="margin-bottom: 20px;">
+                    <label>URL <span style="color: #666; font-size: 10px; margin-left: 5px;">(OPTIONAL)</span></label>
+                    <input type="text" id="requestGameUrl" placeholder="Tanka-Jahari-Simulator.com" style="margin-bottom: 20px;">
+                    <label>Image URL <span style="color: #666; font-size: 10px; margin-left: 5px;">(OPTIONAL)</span></label>
+                    <input type="text" id="requestGameImg" placeholder="Tanka-Jahari-Simulator/logo.png" style="margin-bottom: 20px;">
+                    <label>Other</label>
+                    <textarea id="requestGameOther" placeholder="Anything else you wanna say" style="min-height: 60px; margin-bottom: 0;"></textarea>
+                </div>
+                <div id="report-bug-tab" class="tab-content-modal">
+                    <label>Bug <span class="required-star">*</span></label>
+                    <input type="text" id="bugIssueType" placeholder="Example: the website exploded" style="margin-bottom: 20px;">
+                    <label>Description <span class="required-star">*</span></label>
+                    <textarea id="bugDescription" placeholder="Example: mario blew up the website" style="min-height: 140px; margin-bottom: 0;"></textarea>
+                </div>
+            </div>
+            <div class="btn-row">
+                <button class="action-btn cancel-btn" onclick="closeModals()">Cancel</button>
+                <button class="action-btn save-btn" id="sendRequestOrBug" disabled>Send</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="version-modal">
+        <div class="box-large" style="width: 450px; text-align: left;">
+            <div class="modal-header">v4</div>
+            <div class="modal-body" style="height: auto; padding: 30px;">
+                <p style="margin-bottom: 20px; line-height: 1.5; color: #ccc;"><span style="font-size: 16px; font-weight: bold;">Added:</span><br>
+                    <span style="display: block; padding-left: 20px;"><br> - Added some spectacular new games<br> - Game sections<br></span>
+                    <span style="font-size: 16px; font-weight: bold;">Fixed:</span><br>
+                    <span style="display: block; padding-left: 20px;"><br> - Removed Epstein (truly removed for good)</span>
+                </p>
+            </div>
+            <div class="btn-row">
+                <button class="action-btn save-btn" onclick="closeVersionModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-password-modal">
+        <div class="box-large" style="width: 400px; text-align: center;">
+            <div class="modal-header">YOU MUST BE PRIVILEGED</div>
+            <div class="modal-body" style="height: auto; padding: 30px;">
+                <label>Enter Password</label>
+                <input type="password" id="adminPassword" placeholder="Password">
+                <div id="passwordError" style="color: #ff4444; font-size: 12px; margin-top: -15px; display: none;">Incorrect password</div>
+            </div>
+            <div class="btn-row">
+                <button class="action-btn cancel-btn" onclick="closeModals()">Cancel</button>
+                <button class="action-btn save-btn" onclick="checkAdminPassword()">Enter</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-modal">
+        <div class="box-large" style="width: 800px; max-height: 90vh;">
+            <div class="tab-bar-modal">
+                <div class="tab-modal active" data-tab="admin-requests-tab">GAME REQUESTS</div>
+                <div class="tab-modal" data-tab="admin-reports-tab">BUG REPORTS</div>
+            </div>
+            <div class="modal-body" style="height: auto; max-height: calc(90vh - 160px); padding: 40px;">
+                <div id="admin-requests-tab" class="tab-content-modal active">
+                    <div id="requestsList"></div>
+                </div>
+                <div id="admin-reports-tab" class="tab-content-modal">
+                    <div id="bugReportsList"></div>
+                </div>
+            </div>
+            <div class="btn-row">
+                <button class="action-btn cancel-btn" onclick="closeAdminModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notice-modal">
+        <div class="box-large" style="width: 400px; text-align: center;">
+            <div class="modal-header">Tanka Jahari's Whimsical Words of Wisdom</div>
+            <div class="modal-body" style="height: auto; padding: 30px;">
+                <p style="margin-bottom: 20px; line-height: 1.5; color: #ccc;">Some links will just not work when you try and add them. I recommend finding and using games on github, by searching "&lt;game&gt; play on github". Games/websites will end in .io and repositories will end in .com so use the .io links.</p>
+                <label style="justify-content: center; cursor: pointer; text-transform: none; color: #fff;">
+                    <input type="checkbox" id="stopNotice" style="margin-right: 10px;"> Don't tell me again
+                </label>
+            </div>
+            <div class="btn-row">
+                <button class="action-btn save-btn" onclick="closeNotice()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal">
+        <div class="box-large">
+            <div class="tab-bar-modal">
+                <div class="tab-modal active" data-tab="general">GENERAL</div>
+                <div class="tab-modal" data-tab="theme">THEME</div>
+            </div>
+            <div class="modal-body">
+                <div id="general" class="tab-content-modal active">
+                    <label>Magical Link</label>
+                    <input type="text" id="pI">
+                    <label>Magical Hotkey</label>
+                    <button class="magical-btn" id="kI"></button>
+                </div>
+                <div id="theme" class="tab-content-modal">
+                    <label>Primary (BG)</label><div id="pGrid" class="mini-grid"></div>
+                    <label style="margin-top:20px;">Secondary (Accent)</label><div id="sGrid" class="mini-grid"></div>
+                </div>
+            </div>
+            <div class="btn-row">
+                <button class="action-btn cancel-btn" onclick="closeModals()">Cancel</button>
+                <button class="action-btn save-btn" id="saveSettings">Save Settings</button>
+                <button class="action-btn reset-btn-final" id="tabReset">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="add-modal">
+        <div class="box-large">
+            <div class="modal-header" id="add-modal-title">Add Game</div>
+            <div class="modal-body" style="height: auto; padding-bottom: 10px;">
+                <label>Game Name <span class="required-star" id="nameStar">*</span></label>
+                <input type="text" id="newGameName" placeholder="Tanka Jahari Simulator" oninput="validateForm()">
+                <label>Game URL <span class="required-star" id="urlStar">*</span></label>
+                <input type="text" id="newGameUrl" placeholder="Tanka-Jahari_Simulator.com" oninput="validateForm()">
+                <label>Icon Image URL</label>
+                <input type="text" id="newGameImg" style="margin-bottom: 15px;" placeholder="Tanka-Jahari-Simulator/logo.png">
+                <div style="display: flex; gap: 10px;">
+                    <button class="info-btn" onclick="openNoticeManual()">i</button>
+                    <button class="request-btn" onclick="document.getElementById('add-modal').style.display='none'; openRequestModal();">+</button>
+                </div>
+            </div>
+            <div class="btn-row">
+                <button class="action-btn cancel-btn" onclick="closeModals()">Cancel</button>
+                <button class="action-btn save-btn" id="confirmAddGame" disabled>Save Game</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirm-modal">
+        <div class="box-large" style="width: 300px;">
+            <div class="modal-header" style="color: #ff4444; border-color: #ff4444;">Are you sure?</div>
+            <div class="btn-row">
+                <button class="action-btn cancel-btn" onclick="closeModals()">No</button>
+                <button class="action-btn confirm-del-btn" id="executeDelete">Yes</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="delete-confirm-modal">
+        <div class="box-large" style="width: 300px;">
+            <div class="modal-header" style="color: #ff4444; border-color: #ff4444;">Delete this item?</div>
+            <div class="btn-row">
+                <button class="action-btn cancel-btn" onclick="closeDeleteConfirm()">No</button>
+                <button class="action-btn confirm-del-btn" id="executeDeleteItem">Yes</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-bar">
+        <div class="tab-item home active" data-tab="home" onclick="switchTab('home')">
+            <div class="tab-icon" style="background: var(--s);">🏠</div>
+            <div class="tab-title">Home</div>
+        </div>
+    </div>
+
+    <div id="content-area">
+        <div id="home" class="tab-content active">
+            <div class="home-ui-element info" onclick="document.getElementById('info-modal').style.display='flex'">
+                <button class="info-btn">i</button>
+            </div>
+            <div class="home-ui-element request" onclick="openRequestModal()">
+                <button class="request-btn">+</button>
+            </div>
+            <div class="home-ui-element version" onclick="openVersionModal()">v4</div>
+            <div id="settings-trigger" onclick="openSettings()">
+                <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+            </div>
+            <div id="search-container">
+                <input type="text" id="search-input" placeholder="Search games...">
+            </div>
+            <div id="search-trigger" onclick="toggleSearch()">
+                <svg viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </div>
+
+            <div id="section-sidebar">
+                <span class="section-label active" id="label-spectacular" onclick="scrollToSection('spectacular')">Spectacular Games</span>
+                <span class="section-label" id="label-cool" onclick="scrollToSection('cool')">Cool Games</span>
+            </div>
+
+            <div id="home-content">
+                <h1>Lord Tanka Jahari<span class="secret-apostrophe" onclick="openAdminPasswordModal()">'</span>s Land of the Free</h1>
+                <div class="grid" id="gameGrid"></div>
+                <hr class="section-divider" id="section-divider">
+                <div class="grid" id="browserGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+        import { getDatabase, ref, set, get, update, onValue, remove, onDisconnect, push } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDHEffnv23Pcmapk0IR_gyqKe1eYp5_XQ8",
+            authDomain: "tankajahariv3.firebaseapp.com",
+            databaseURL: "https://tankajahariv3-default-rtdb.firebaseio.com",
+            projectId: "tankajahariv3",
+            storageBucket: "tankajahariv3.firebasestorage.app",
+            messagingSenderId: "838405944847",
+            appId: "1:838405944847:web:fdb6e131a1820d9188957a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        const userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        const userRef = ref(database, 'users/' + userId);
+
+        set(userRef, { joinedAt: Date.now(), lastSeen: Date.now() });
+
+        const visitsRef = ref(database, 'stats/totalVisits');
+        get(visitsRef).then((snapshot) => {
+            const currentVisits = snapshot.val() || 0;
+            set(visitsRef, currentVisits + 1);
+        });
+
+        onDisconnect(userRef).remove();
+        setInterval(() => { update(userRef, { lastSeen: Date.now() }); }, 30000);
+
+        const fullGames = [
+            { name: "Hollow Knight", url: "https://mhikarup.github.io/hollowknightunblocked/", img: "https://composerlarkin.com/wp-content/uploads/2017/02/soundtrack_cover.jpg" },
+            { name: "Hollow Knight: Silksong", url: "https://truffled.lol/games/silk/index.html", img: "https://truffled.lol/png/games/silk.webp" },
+            { name: "Half Life", url: "https://truffled.lol/games/hl-main/index.html", img:"https://truffled.lol/png/games/halflife.webp" },
+            { name: "Half Life: Opposing Force", url: "https://truffled.lol/gamefile/hlof.html", img: "https://truffled.lol/png/games/hlof.webp" },
+            { name: "Fallout", url: "https://truffled.lol/gamefile/falloutt.html", img: "https://truffled.lol/png/games/fallout.webp" },
+            { name: "Fallout 2", url: "https://truffled.lol/games/fo2/index.html", img: "https://truffled.lol/png/games/fallout2.webp" },
+            { name: "Portal", url: "https://truffled.lol/games/portal/index.html", img: "https://truffled.lol/png/games/portal.webp" },
+            { name: "Ultrakill", url: "https://truffled.lol/games/ultrakill/ultrakill/index.html", img: "https://truffled.lol/png/games/ultra.webp" },
+            { name: "Undertale", url: "https://truffled.lol/gamefile/undertale.html", img: "https://truffled.lol/png/games/uertale.webp" },
+            { name: "The Legend of Zelda Ocarina of Time", url: "https://truffled.lol/gamefile/tloz.html", img: "https://truffled.lol/png/games/tloz.webp" },
+            { name: "Your Only Move Is Hustle", url: "https://truffled.lol/games/YOMIHustle/index.html", img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2212330/header.jpg?t=1702425086" },
+            { name: "DOOM", url: "https://azazeln28.neocities.org/games/doom", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGE2mq9iAu71AcRVIHpRZ01jA1Sme0sOwDOw&s" },
+            { name: "Minecraft", url: "https://eaglercraft.q13x.com/1.12.2/wasm/", img: "https://live.staticflickr.com/7367/10134745566_a7c6dab5bb_z.jpg" },
+            { name: "Luigi's Brother 64", url: "https://notan127.github.io/SM64-PC-Port-WebGL/classic/", img: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/1d88deca-0eec-4d00-bdcf-8566768cc03b/d6azgkg-b0d52076-20a0-4e77-8d4a-689ce849693c.png" },
+            { name: "Bitburner", url: "https://bitburner-official.github.io/", img: "https://cdn2.steamgriddb.com/grid/50307d8d84d7930c6e2200647ab1ea76.png" }
+        ];
+
+        const browserGames = [
+            { name: "Geometry Dash", url: "https://geometrylitepc.io/", img: "https://m.media-amazon.com/images/I/61mVIP6Oo1L.png" },
+            { name: "ZombsRoyale.io", url: "https://zombsroyale.io/", img: "https://upload.wikimedia.org/wikipedia/en/6/68/ZombsRoyale.io_Cover_Art.jpg" },
+            { name: "Krunker.io", url: "https://krunker.io/", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOngL3z5eb3Bb0KI8QENmWGDZ554ZyFTBeRQ&s" },
+            { name: "Paper.io 2", url: "https://paperio.site/", img: "https://i.pinimg.com/474x/17/df/3e/17df3e1db007e4de843ded50125ae9a5.jpg" },
+            { name: "Townscaper", url: "https://oskarstalberg.com/Townscaper/", img: "https://images.gog-statics.com/6f95de900851a1ca4c6df3122cac1d280516ce19aba82dbe7473a29e66e4a45f_product_card_v2_mobile_slider_639.jpg" },
+            { name: "We Become What We Behold", url: "https://truffled.lol/gamefile/wbwwb.html", img: "https://truffled.lol/png/games/wbwwb.webp" },
+            { name: "America Simulator", url: "https://mortarmaster3000.github.io/america/", img: "https://www.publicdomainpictures.net/pictures/120000/nahled/united-states-flag-14344283733FG.jpg" },
+            { name: "Music Game", url: "https://rhythmplus.io/studio", img: "https://i.namu.wiki/i/4KrbsgPUYcjKOCMu2ptnI16xMJg92mUV0VNWiNOnV_Oh8U0edOvOYWnWMbiyFXTt0j1OalI_G73066w2FsKfKg.webp" },
+            { name: "Antimatter Dimensions", url: "https://ivark.github.io/AntimatterDimensions/", img: "https://ivark.github.io/AntimatterDimensions/icon.png" },
+            { name: "Idle Breakout", url: "https://idle-breakout.neocities.org/", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDMEy9mqSULYkMxOoQzpLxqyzQQUnItCPJLfFGbreXrDt3fa9VfRqtypPldfHrZ_F9EqzIzQ&s=10" },
+            { name: "Territorial.io", url: "https://territorial.io/", img: "https://territorial-io.com/upload/imgs/territorial-io.jpg" },
+            { name: "explosion", url: "https://radmanplays.github.io/Eaglercraft-1.21/", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3aNw2EsQet_646ZULvppGfnVEMqcEyTo_fA&s" },
+            { name: "Moto X3M", url: "https://motox3munblocked.github.io/", img: "https://imgs.crazygames.com/moto-x3m_1x1/20231122033955/moto-x3m_1x1-cover?format=auto&quality=100&metadata=none&width=1200" },
+            { name: "Moto X3M 2", url: "https://html-online-game.github.io/moto-x3m-2/", img: "https://motox3mwinter.com/wp-content/uploads/2025/11/Moto-X3M-2.webp" },
+            { name: "Stickman Hook", url: "https://stickmanhook.github.io/", img: "https://play-lh.googleusercontent.com/yXqBI1Vb1b-xjwmXLE2T7FQbgHIxfvjze1b6jO2aLHfy8Y8ta7NFSEVqZoPHtM2Ajyrl" },
+            { name: "2048", url: "https://www.2048.org/", img: "https://upload.wikimedia.org/wikipedia/commons/1/18/2048_logo.svg" },
+            { name: "HexGL", url: "https://hexgl.bkcore.com/play/", img: "https://img.itch.zone/aW1nLzM2NjM2NzcuanBn/original/U1%2FbAe.jpg" },
+            { name: "Defly.io", url: "https://defly.io/", img: "https://i.ytimg.com/vi/IfkgLxYaQko/hqdefault.jpg" },
+            { name: "Madalin Stunt Cars 3", url: "https://adfree3kh0.github.io/projects/madalin-stunt-cars-3/index.html", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSriaNt7dWJd9uhN0Qii_Sxxi9EvS-LFYbmoQ&s" },
+            { name: "Gartic Phone", url: "https://garticphone.com/", img: "https://garticphone.com/images/thumb.png" },
+            { name: "Monkey Mart", url: "https://ubg98.github.io/MonkeyMart/", img: "https://play-lh.googleusercontent.com/rWReIdyvDaYJPeOxn7hbC0b-96ixGpQKM_EndiQa3SUME8TtI_rNUcI4qsw5teK9mqk=w240-h480-rw" },
+            { name: "DigDig.io", url: "https://digdig.io/", img: "https://kevin.games/assets/images/index/digdig-io.jpg" },
+            { name: "Gold Digger FRVR", url: "https://golddigger.frvr.com/", img: "https://play-lh.googleusercontent.com/1ZntzjEjh1dQoS8MPvVqSH_5IHHo2TbfyJdaNa_0G-5Iox_tfbkqeAkkeTiQMiaMPhGe" },
+            { name: "Idle Ant", url: "https://scorzy.github.io/IdleAnt/", img:"https://image2url.com/r2/default/images/1768875268489-89e5325a-0eaa-49fd-b80c-ad4da69745a2.png" },
+            { name: "Tanka Jahari's Communication Service", url: "https://mortarmaster3000.github.io", img: "https://preview.redd.it/tanka-jahari-v0-oh7y8cctnu7g1.jpeg?width=320&crop=smart&auto=webp&s=663f5349d34b3bac660e033e8527fc8f5293e575" },
+            { name: "Skribbl.io", url: "https://skribbl.io/", img: "https://skribbl.io/img/thumbnail.png" },
+            { name: "Bitlife", url: "https://xlegends.github.io/bitlife/", img: "https://i.ytimg.com/vi/WUTrv--kZtI/maxresdefault.jpg" },
+            { name: "Truffled", url: "https://truffled.lol/", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRelvHA2LTW1DPs70AL83-CcZubElC12h78rQ&s" },
+            { name: "Cybertrump", url: "https://mortarmaster3000.github.io/cybertrump/?scrlcbp=.", img: "https://d1y822qhq55g6.cloudfront.net/default/_superImage/President-Donald-Trump-Official-Presidential-Portrait-2025-JPG.jpg" },
+            { name: "Bonk.io", url: "https://bonk.io/", img: "https://b.thumbs.redditmedia.com/9p8-wn2_KPdgjPTaR9fx-NIVgFhvsgBL0WPdbv5GMkA.png" },
+            { name: "Diep.io", url: "https://diep.io/", img: "https://d.player.one/en/full/145601/diepio-has-seen-ton-updates-this-month-including-new-auto-trapper-streamliner-spread-shot.jpg?w=1600&h=1200&q=88&f=29ed7b98f2ee3a7feaf40afd10f76d74" },
+            { name: "Curve Fever", url: "https://curvefever.pro/", img: "https://gameforge.com/de-DE/littlegames/includes/images/games/6388_5eb3e86cd81b4.jpg" },
+            { name: "Bloons TD 4", url: "https://mountain658.github.io/g/btd4/index.html", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVeVofXSpRODBfgxgrGwNAT1h_xsqr4SiQd_D8ac7Pk1C7e-bh6CP40CTUhBxQOB_LCF-UGg&s=10" }
+        ];
+
+        const colorPalette = ["#FF0000", "#FF4500", "#FFA500", "#FFFF00", "#ADFF2F", "#00FF00", "#00FF7F", "#00FFFF", "#00BFFF", "#0000FF", "#4B0082", "#9300EE", "#FF00FF", "#FF69B4", "#FFC0CB", "#FFFFFF", "#8B4513", "#666666", "#2F4F4F", "#1A1A1A", "#050505"];
+
+        let pUrl = "https://classroom.google.com";
+        let pKey = { k: "x", c: true, s: false, a: false };
+        let pCol = "#050505";
+        let sCol = "#9300ee";
+        let customGames = [];
+        let editingIndex = -1;
+        let deletingIndex = -1;
+        let tempP = pCol, tempS = sCol, tempKey = {...pKey}, activeTab = "general";
+        let tabCounter = 0;
+        let openTabs = {};
+
+        function loadUserData() {
+            try {
+                const saved = localStorage.getItem('tankaJahariData');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    if (data.customGames) customGames = data.customGames;
+                    if (data.theme) { pCol = data.theme.primary || "#050505"; sCol = data.theme.secondary || "#9300ee"; apply(pCol, sCol); }
+                    if (data.settings) { pUrl = data.settings.panicUrl || "https://classroom.google.com"; pKey = data.settings.panicKey || { k: "x", c: true, s: false, a: false }; }
+                }
+            } catch (error) { console.error('Error loading data:', error); }
+        }
+
+        function saveUserData() {
+            try {
+                localStorage.setItem('tankaJahariData', JSON.stringify({ customGames, theme: { primary: pCol, secondary: sCol }, settings: { panicUrl: pUrl, panicKey: pKey }, lastUpdated: Date.now() }));
+            } catch (error) { console.error('Error saving data:', error); }
+        }
+
+        function apply(p, s) { document.documentElement.style.setProperty('--p', p); document.documentElement.style.setProperty('--s', s); }
+
+        window.validateForm = function() {
+            const name = document.getElementById('newGameName').value.trim();
+            const url = document.getElementById('newGameUrl').value.trim();
+            document.getElementById('nameStar').style.display = name ? 'none' : 'inline';
+            document.getElementById('urlStar').style.display = url ? 'none' : 'inline';
+            document.getElementById('confirmAddGame').disabled = !(name && url);
+        };
+
+        window.closeNotice = function() {
+            const checkbox = document.getElementById('stopNotice');
+            if (checkbox.checked) localStorage.setItem('tankaJahariNoNotice', 'true');
+            document.getElementById('notice-modal').style.display = 'none';
+            document.getElementById('add-modal').style.display = "flex";
+        };
+
+        window.closeVersionModal = () => {
+            const modal = document.getElementById('version-modal');
+            modal.classList.remove('show');
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
+        };
+
+        window.openVersionModal = () => {
+            const modal = document.getElementById('version-modal');
+            modal.style.display = 'flex';
+            setTimeout(() => { modal.classList.add('show'); }, 10);
+        };
+
+        window.openNoticeManual = function() {
+            document.getElementById('add-modal').style.display = "none";
+            document.getElementById('notice-modal').style.display = "flex";
+        };
+
+        function openAddModal() {
+            if (editingIndex === -1) {
+                document.getElementById('newGameName').value = "";
+                document.getElementById('newGameUrl').value = "";
+                document.getElementById('newGameImg').value = "";
+                document.getElementById('add-modal-title').innerText = "Add Game";
+                const noNotice = localStorage.getItem('tankaJahariNoNotice');
+                if (noNotice === 'true') { document.getElementById('add-modal').style.display = "flex"; }
+                else { document.getElementById('notice-modal').style.display = "flex"; }
+            } else {
+                document.getElementById('add-modal').style.display = "flex";
+            }
+            window.validateForm();
+        }
+
+        function makeCard(g, isCustom, originalIndex) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            if (isCustom) {
+                card.innerHTML = `
+                    <div class="card-action edit-pos">
+                        <div class="mini-btn" onclick="event.stopPropagation(); editGame(${originalIndex})">
+                            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                        </div>
+                    </div>
+                    <div class="card-action del-pos">
+                        <div class="mini-btn del" onclick="event.stopPropagation(); showConfirm(${originalIndex})">
+                            <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                        </div>
+                    </div>
+                    <div class="img" style="background-image:url('${g.img}')"></div>
+                    <div class="label"><span>${g.name}</span></div>`;
+            } else {
+                card.innerHTML = `<div class="img" style="background-image:url('${g.img}')"></div><div class="label"><span>${g.name}</span></div>`;
+            }
+            card.onclick = () => openGameTab(g.name, g.url, g.img);
+            return card;
+        }
+
+        function renderGames() {
+            const fullGrid = document.getElementById('gameGrid');
+            const browserGrid = document.getElementById('browserGrid');
+            fullGrid.innerHTML = '';
+            browserGrid.innerHTML = '';
+            const sortFn = (a, b) => a.name.localeCompare(b.name);
+            fullGames.sort(sortFn).forEach(g => fullGrid.appendChild(makeCard(g, false)));
+            browserGames.sort(sortFn).forEach(g => browserGrid.appendChild(makeCard(g, false)));
+            [...customGames].sort(sortFn).forEach((g) => {
+                const originalIndex = customGames.indexOf(g);
+                browserGrid.appendChild(makeCard(g, true, originalIndex));
+            });
+            const addCard = document.createElement('div');
+            addCard.className = 'card add-btn-card';
+            addCard.innerHTML = '<div class="add-icon">+</div><div class="label"><span>ADD GAME</span></div>';
+            addCard.onclick = () => { editingIndex = -1; openAddModal(); };
+            browserGrid.appendChild(addCard);
+        }
+
+        window.scrollToSection = function(section) {
+            const homeContent = document.getElementById('home-content');
+            if (section === 'spectacular') {
+                homeContent.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                const divider = document.getElementById('section-divider');
+                homeContent.scrollTo({ top: divider.offsetTop - 60, behavior: 'smooth' });
+            }
+        };
+
+        function updateSidebarLabels() {
+            const homeContent = document.getElementById('home-content');
+            const divider = document.getElementById('section-divider');
+            const scrollTop = homeContent.scrollTop;
+            const viewportHeight = homeContent.clientHeight;
+            const dividerTop = divider.offsetTop;
+            const midpoint = scrollTop + viewportHeight / 2;
+            const labelSpec = document.getElementById('label-spectacular');
+            const labelCool = document.getElementById('label-cool');
+            if (midpoint < dividerTop) {
+                labelSpec.classList.add('active');
+                labelCool.classList.remove('active');
+            } else {
+                labelSpec.classList.remove('active');
+                labelCool.classList.add('active');
+            }
+        }
+        document.getElementById('home-content').addEventListener('scroll', updateSidebarLabels);
+
+        let searchActive = false;
+        window.toggleSearch = function() {
+            searchActive = !searchActive;
+            const container = document.getElementById('search-container');
+            const input = document.getElementById('search-input');
+            if (searchActive) { container.classList.add('active'); setTimeout(() => input.focus(), 300); }
+            else { container.classList.remove('active'); input.value = ''; renderGames(); }
+        };
+
+        function searchGames(query) {
+            if (!query.trim()) { renderGames(); return; }
+            const fullGrid = document.getElementById('gameGrid');
+            const browserGrid = document.getElementById('browserGrid');
+            fullGrid.innerHTML = '';
+            browserGrid.innerHTML = '';
+            const lowerQuery = query.toLowerCase();
+            const sortFn = (a, b) => a.name.localeCompare(b.name);
+            fullGames.filter(g => g.name.toLowerCase().includes(lowerQuery)).sort(sortFn).forEach(g => fullGrid.appendChild(makeCard(g, false)));
+            browserGames.filter(g => g.name.toLowerCase().includes(lowerQuery)).sort(sortFn).forEach(g => browserGrid.appendChild(makeCard(g, false)));
+            customGames.filter(g => g.name.toLowerCase().includes(lowerQuery)).sort(sortFn).forEach(g => {
+                const originalIndex = customGames.indexOf(g);
+                browserGrid.appendChild(makeCard(g, true, originalIndex));
+            });
+            const addCard = document.createElement('div');
+            addCard.className = 'card add-btn-card';
+            addCard.innerHTML = '<div class="add-icon">+</div><div class="label"><span>ADD GAME</span></div>';
+            addCard.onclick = () => { editingIndex = -1; openAddModal(); };
+            browserGrid.appendChild(addCard);
+        }
+
+        function openGameTab(name, url, img) {
+            const tabId = `tab-${tabCounter++}`;
+            const tabBar = document.getElementById('tab-bar');
+            const tabItem = document.createElement('div');
+            tabItem.className = 'tab-item';
+            tabItem.dataset.tab = tabId;
+            tabItem.innerHTML = `
+                <div class="tab-icon"><img src="${img}" style="width:100%; height:100%; object-fit:cover; border-radius:3px;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/686/686586.png'"></div>
+                <div class="tab-title">${name}</div>
+                <div class="tab-close">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </div>`;
+            tabItem.onclick = (e) => { if (!e.target.closest('.tab-close')) switchTab(tabId); };
+            tabItem.querySelector('.tab-close').onclick = (e) => { e.stopPropagation(); closeTab(tabId); };
+            tabBar.appendChild(tabItem);
+            const contentArea = document.getElementById('content-area');
+            const content = document.createElement('div');
+            content.id = tabId;
+            content.className = 'tab-content';
+            content.innerHTML = `<iframe src="${url}"></iframe>`;
+            contentArea.appendChild(content);
+            openTabs[tabId] = { name, url, img, element: tabItem, content };
+            switchTab(tabId);
+        }
+
+        window.switchTab = function(tabId) {
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            const targetTab = document.querySelector(`.tab-item[data-tab="${tabId}"]`);
+            if (targetTab) targetTab.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            const targetContent = document.getElementById(tabId);
+            if (targetContent) targetContent.classList.add('active');
+            const homeElements = document.querySelectorAll('.home-ui-element');
+            homeElements.forEach(el => { el.style.display = (tabId === 'home') ? 'block' : 'none'; });
+            const sidebar = document.getElementById('section-sidebar');
+            if (sidebar) sidebar.style.display = (tabId === 'home') ? 'flex' : 'none';
+        };
+
+        function closeTab(tabId) {
+            if (tabId === 'home') return;
+            const tab = openTabs[tabId];
+            if (tab) {
+                const wasActive = tab.content.classList.contains('active');
+                tab.element.remove();
+                tab.content.remove();
+                delete openTabs[tabId];
+                if (wasActive) window.switchTab('home');
+            }
+        }
+
+        window.showConfirm = function(index) { deletingIndex = index; document.getElementById('confirm-modal').style.display = "flex"; };
+
+        document.getElementById('executeDelete').onclick = () => {
+            if(deletingIndex > -1) { customGames.splice(deletingIndex, 1); saveUserData(); renderGames(); }
+            closeModals();
+        };
+
+        window.editGame = function(index) {
+            editingIndex = index;
+            const g = customGames[index];
+            document.getElementById('newGameName').value = g.name;
+            document.getElementById('newGameUrl').value = g.url;
+            document.getElementById('newGameImg').value = g.img;
+            document.getElementById('add-modal-title').innerText = "Edit Game";
+            openAddModal();
+        };
+
+        function setupColors() {
+            ['pGrid', 'sGrid'].forEach(id => {
+                const container = document.getElementById(id);
+                container.innerHTML = '';
+                colorPalette.forEach(c => {
+                    const sq = document.createElement('div');
+                    sq.className = 'color-sq' + ( ((id==='pGrid'&&c===tempP)||(id==='sGrid'&&c===tempS)) ? ' active' : '' );
+                    sq.style.background = c;
+                    sq.onclick = () => {
+                        container.querySelectorAll('.color-sq').forEach(s => s.classList.remove('active'));
+                        sq.classList.add('active');
+                        if(id === 'pGrid') tempP = c; else tempS = c;
+                    };
+                    container.appendChild(sq);
+                });
+            });
+        }
+
+        window.openSettings = () => {
+            tempP = pCol; tempS = sCol; tempKey = {...pKey};
+            document.getElementById('pI').value = pUrl;
+            updateHotkeyBtn();
+            document.getElementById('modal').style.display = "flex";
+            setupColors();
+        };
+
+        function updateHotkeyBtn() {
+            let str = ""; if(tempKey.c) str+="Ctrl+"; if(tempKey.s) str+="Shift+"; if(tempKey.a) str+="Alt+";
+            document.getElementById('kI').innerText = str + tempKey.k.toUpperCase();
+        }
+
+        document.getElementById('kI').onclick = function() {
+            this.innerText = "...";
+            const cap = (e) => {
+                if (["Control","Shift","Alt"].includes(e.key)) return;
+                e.preventDefault();
+                tempKey = { k: e.key.toLowerCase(), c: e.ctrlKey, s: e.shiftKey, a: e.altKey };
+                updateHotkeyBtn();
+                window.removeEventListener('keydown', cap);
+            };
+            window.addEventListener('keydown', cap);
+        };
+
+        document.getElementById('saveSettings').onclick = () => { pUrl = document.getElementById('pI').value; pKey = {...tempKey}; pCol = tempP; sCol = tempS; apply(pCol, sCol); saveUserData(); closeModals(); };
+
+        document.getElementById('tabReset').onclick = () => {
+            if(activeTab === "general") { tempKey = { k: "x", c: true, s: false, a: false }; document.getElementById('pI').value = "https://classroom.google.com"; updateHotkeyBtn(); }
+            else { tempP = "#050505"; tempS = "#9300ee"; setupColors(); }
+        };
+
+        document.getElementById('confirmAddGame').onclick = () => {
+            const name = document.getElementById('newGameName').value.trim();
+            let url = document.getElementById('newGameUrl').value.trim();
+            const img = document.getElementById('newGameImg').value.trim() || "https://cdn-icons-png.flaticon.com/512/686/686586.png";
+            if(!name || !url) return;
+            if(!url.startsWith('http')) url = 'https://' + url;
+            if(editingIndex > -1) { customGames[editingIndex] = {name, url, img}; } else { customGames.push({name, url, img}); }
+            saveUserData(); renderGames(); closeModals();
+        };
+
+        window.closeModals = () => {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('add-modal').style.display = 'none';
+            document.getElementById('confirm-modal').style.display = 'none';
+            document.getElementById('notice-modal').style.display = 'none';
+            document.getElementById('info-modal').style.display = 'none';
+            window.closeVersionModal();
+            document.getElementById('admin-password-modal').style.display = 'none';
+            document.getElementById('request-modal').style.display = 'none';
+            document.getElementById('success-modal').style.display = 'none';
+            document.getElementById('error-modal').style.display = 'none';
+        };
+
+        window.closeDeleteConfirm = () => { document.getElementById('delete-confirm-modal').style.display = 'none'; };
+        window.closeAdminModal = () => { document.getElementById('admin-modal').style.display = 'none'; window.closeDeleteConfirm(); };
+
+        document.querySelectorAll('.tab-modal').forEach(t => {
+            t.onclick = () => {
+                document.querySelectorAll('.tab-modal, .tab-content-modal').forEach(el => el.classList.remove('active'));
+                t.classList.add('active');
+                activeTab = t.dataset.tab;
+                document.getElementById(activeTab).classList.add('active');
+            };
+        });
+
+        window.addEventListener('keydown', e => {
+            if(e.key.toLowerCase()===pKey.k && e.ctrlKey===pKey.c && e.shiftKey===pKey.s && e.altKey===pKey.a) { window.location.href = pUrl; }
+        });
+
+        // Request modal
+        let activeRequestTab = 'request-game-tab';
+
+        window.openRequestModal = function() {
+            document.getElementById('request-modal').style.display = 'flex';
+            activeRequestTab = 'request-game-tab';
+            document.querySelectorAll('#request-modal .tab-modal').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('#request-modal .tab-content-modal').forEach(c => c.classList.remove('active'));
+            document.querySelector('#request-modal .tab-modal[data-tab="request-game-tab"]').classList.add('active');
+            document.getElementById('request-game-tab').classList.add('active');
+            document.getElementById('requestGameName').value = '';
+            document.getElementById('requestGameUrl').value = '';
+            document.getElementById('requestGameImg').value = '';
+            document.getElementById('requestGameOther').value = '';
+            document.getElementById('bugIssueType').value = '';
+            document.getElementById('bugDescription').value = '';
+            validateRequestOrBug();
+            setTimeout(() => document.getElementById('requestGameName').focus(), 100);
+        };
+
+        function validateRequestOrBug() {
+            if (activeRequestTab === 'request-game-tab') {
+                const name = document.getElementById('requestGameName').value.trim();
+                document.getElementById('sendRequestOrBug').disabled = !name;
+            } else {
+                const issueType = document.getElementById('bugIssueType').value.trim();
+                const description = document.getElementById('bugDescription').value.trim();
+                document.getElementById('sendRequestOrBug').disabled = !(issueType && description);
+            }
+        }
+
+        document.getElementById('requestGameName').addEventListener('input', validateRequestOrBug);
+        document.getElementById('bugIssueType').addEventListener('input', validateRequestOrBug);
+        document.getElementById('bugDescription').addEventListener('input', validateRequestOrBug);
+
+        document.querySelectorAll('#request-modal .tab-modal').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const targetTab = this.dataset.tab;
+                activeRequestTab = targetTab;
+                document.querySelectorAll('#request-modal .tab-modal').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('#request-modal .tab-content-modal').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById(targetTab).classList.add('active');
+                validateRequestOrBug();
+                if (targetTab === 'request-game-tab') {
+                    setTimeout(() => document.getElementById('requestGameName').focus(), 100);
+                } else {
+                    setTimeout(() => document.getElementById('bugIssueType').focus(), 100);
+                }
+            });
+        });
+
+        document.getElementById('sendRequestOrBug').onclick = function() {
+            if (activeRequestTab === 'request-game-tab') {
+                const name = document.getElementById('requestGameName').value.trim();
+                const url = document.getElementById('requestGameUrl').value.trim();
+                const img = document.getElementById('requestGameImg').value.trim();
+                const other = document.getElementById('requestGameOther').value.trim();
+                if (!name) return;
+                const requestsRef = ref(database, 'gameRequests');
+                const newRequestRef = push(requestsRef);
+                set(newRequestRef, { name, url: url || 'Not provided', img: img || 'Not provided', other: other || 'None', timestamp: Date.now(), requestId: newRequestRef.key })
+                .then(() => { closeModals(); document.getElementById('success-message').textContent = 'Game request sent without blowing up'; document.getElementById('success-modal').style.display = 'flex'; })
+                .catch(() => { closeModals(); document.getElementById('error-message').textContent = 'Failed to send request. Please try again.'; document.getElementById('error-modal').style.display = 'flex'; });
+            } else {
+                const issueType = document.getElementById('bugIssueType').value.trim();
+                const description = document.getElementById('bugDescription').value.trim();
+                if (!issueType || !description) return;
+                const bugsRef = ref(database, 'bugReports');
+                const newBugRef = push(bugsRef);
+                set(newBugRef, { issueType, description, timestamp: Date.now(), bugId: newBugRef.key })
+                .then(() => { closeModals(); document.getElementById('success-message').textContent = 'Bug report sent without blowing up'; document.getElementById('success-modal').style.display = 'flex'; })
+                .catch(() => { closeModals(); document.getElementById('error-message').textContent = 'Failed to send bug report. Please try again.'; document.getElementById('error-modal').style.display = 'flex'; });
+            }
+        };
+
+        // Admin
+        window.openAdminPasswordModal = function() {
+            document.getElementById('admin-password-modal').style.display = 'flex';
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('passwordError').style.display = 'none';
+            setTimeout(() => document.getElementById('adminPassword').focus(), 100);
+        };
+
+        window.checkAdminPassword = function() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === 'TankaJahari42') {
+                document.getElementById('admin-password-modal').style.display = 'none';
+                openAdminDashboard();
+            } else {
+                document.getElementById('passwordError').style.display = 'block';
+                document.getElementById('adminPassword').value = '';
+            }
+        };
+
+        document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') window.checkAdminPassword();
+        });
+
+        function openAdminDashboard() {
+            document.getElementById('admin-modal').style.display = 'flex';
+            document.querySelectorAll('#admin-modal .tab-modal').forEach(tab => {
+                tab.onclick = function() {
+                    document.querySelectorAll('#admin-modal .tab-modal').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('#admin-modal .tab-content-modal').forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    document.getElementById(this.dataset.tab).classList.add('active');
+                };
+            });
+
+            const requestsRef = ref(database, 'gameRequests');
+            onValue(requestsRef, (snapshot) => {
+                const requests = snapshot.val();
+                const requestsList = document.getElementById('requestsList');
+                if (!requests) { requestsList.innerHTML = '<div class="no-requests">No game requests yet</div>'; return; }
+                const requestsArray = Object.entries(requests).map(([key, value]) => ({ id: key, ...value })).sort((a, b) => b.timestamp - a.timestamp);
+                requestsList.innerHTML = requestsArray.map(req => `
+                    <div class="request-item">
+                        <div class="request-item-header">
+                            <div class="request-game-name">${req.name}</div>
+                            <button class="request-delete-btn" onclick="deleteRequest('${req.id}')">Delete</button>
+                        </div>
+                        <div class="request-field"><span class="request-field-label">URL:</span><span class="request-field-value">${req.url}</span></div>
+                        <div class="request-field"><span class="request-field-label">Image URL:</span><span class="request-field-value">${req.img}</span></div>
+                        <div class="request-field"><span class="request-field-label">Other:</span><span class="request-field-value">${req.other}</span></div>
+                        <div class="request-field"><span class="request-field-label">Submitted:</span><span class="request-field-value">${new Date(req.timestamp).toLocaleString()}</span></div>
+                    </div>
+                `).join('');
+            });
+
+            const bugsRef = ref(database, 'bugReports');
+            onValue(bugsRef, (snapshot) => {
+                const bugs = snapshot.val();
+                const bugReportsList = document.getElementById('bugReportsList');
+                if (!bugs) { bugReportsList.innerHTML = '<div class="no-requests">No bug reports yet</div>'; return; }
+                const bugsArray = Object.entries(bugs).map(([key, value]) => ({ id: key, ...value })).sort((a, b) => b.timestamp - a.timestamp);
+                bugReportsList.innerHTML = bugsArray.map(bug => `
+                    <div class="request-item">
+                        <div class="request-item-header">
+                            <div class="request-game-name">${bug.issueType}</div>
+                            <button class="request-delete-btn" onclick="deleteBugReport('${bug.id}')">Delete</button>
+                        </div>
+                        <div class="request-field"><span class="request-field-label">Description:</span><span class="request-field-value">${bug.description}</span></div>
+                        <div class="request-field"><span class="request-field-label">Submitted:</span><span class="request-field-value">${new Date(bug.timestamp).toLocaleString()}</span></div>
+                    </div>
+                `).join('');
+            });
+        }
+
+        let pendingDeleteId = null;
+        let pendingDeleteType = null;
+
+        window.deleteRequest = function(requestId) { pendingDeleteId = requestId; pendingDeleteType = 'request'; document.getElementById('delete-confirm-modal').style.display = 'flex'; };
+        window.deleteBugReport = function(bugId) { pendingDeleteId = bugId; pendingDeleteType = 'bug'; document.getElementById('delete-confirm-modal').style.display = 'flex'; };
+
+        document.getElementById('executeDeleteItem').onclick = function() {
+            if (pendingDeleteType === 'request') {
+                remove(ref(database, 'gameRequests/' + pendingDeleteId)).catch(() => { window.closeDeleteConfirm(); document.getElementById('error-message').textContent = 'Failed to delete request.'; document.getElementById('error-modal').style.display = 'flex'; });
+            } else if (pendingDeleteType === 'bug') {
+                remove(ref(database, 'bugReports/' + pendingDeleteId)).catch(() => { window.closeDeleteConfirm(); document.getElementById('error-message').textContent = 'Failed to delete bug report.'; document.getElementById('error-modal').style.display = 'flex'; });
+            }
+            window.closeDeleteConfirm();
+            pendingDeleteId = null; pendingDeleteType = null;
+        };
+
+        document.getElementById('search-input').addEventListener('input', (e) => { searchGames(e.target.value); });
+        document.addEventListener('click', (e) => {
+            if (searchActive && !e.target.closest('#search-container') && !e.target.closest('#search-trigger')) { window.toggleSearch(); }
+        });
+
+        apply(pCol, sCol);
+        loadUserData();
+        renderGames();
+
+        setTimeout(() => { document.getElementById('version-modal').classList.add('show'); }, 100);
+
+        window.addEventListener('keydown', (e) => { if (e.key === 'Escape') window.closeModals(); });
+    </script>
+</body>
+</html>
