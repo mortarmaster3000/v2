@@ -78,43 +78,39 @@
         @keyframes slideUp { from { transform: translateY(100vh); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
         #home-content { 
-    padding: 60px 40px 60px 40px;
-    display: flex; 
-    flex-direction: column; 
-    align-items: center;
-    overflow-y: auto;
-    height: 100%;
-    box-sizing: border-box;
-    position: relative;
+            padding: 60px 40px 60px 160px;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            overflow-y: auto;
+            height: 100%;
+            box-sizing: border-box;
+            position: relative;
         }
 
-       #section-sidebar {
-    position: fixed;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    pointer-events: none;
-    max-width: 80px;
-}
-.section-label {
-    font-size: 9px;
-    font-weight: 400;
-    letter-spacing: 1.5px;
-    color: #444;
-    text-transform: uppercase;
-    cursor: pointer;
-    pointer-events: all;
-    transition: color 0.3s, font-weight 0.3s;
-    user-select: none;
-    padding: 4px 0;
-    line-height: 1.3;
-    word-break: break-word;
-    white-space: normal;
-}
+        #section-sidebar {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            pointer-events: none;
+        }
+        .section-label {
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: #444;
+            text-transform: uppercase;
+            cursor: pointer;
+            pointer-events: all;
+            transition: color 0.3s, font-weight 0.3s;
+            user-select: none;
+            padding: 6px 0;
+        }
         .section-label.active {
             color: var(--s);
             font-weight: 700;
@@ -129,7 +125,7 @@
         }
 
         h1 { color:var(--s) !important; text-shadow:0 0 10px var(--s); letter-spacing:4px; font-weight:300; margin-bottom: 30px; text-align:center; text-transform: uppercase; }
-        .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:20px; width:100%; max-width:1200px; justify-content:center; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fill, 250px); gap:20px; width:100%; max-width:1200px; justify-content:center; }
         .card { background:#111; border:1px solid #222; border-radius:12px; height:250px; cursor:pointer; overflow:hidden; position:relative; transition:0.3s; }
         .card:hover { border-color:var(--s); transform:translateY(-5px); box-shadow:0 0 15px var(--s); }
         .img { width:100%; height:100%; background-size:cover; background-position:center; }
@@ -434,16 +430,16 @@
             </div>
 
             <div id="section-sidebar">
-                <span class="section-label" id="label-cool" onclick="scrollToSection('cool')">Cool Games</span>
                 <span class="section-label active" id="label-spectacular" onclick="scrollToSection('spectacular')">Spectacular Games</span>
+                <span class="section-label" id="label-cool" onclick="scrollToSection('cool')">Cool Games</span>
             </div>
 
-<div id="home-content">
-    <h1>Lord Tanka Jahari<span class="secret-apostrophe" onclick="openAdminPasswordModal()">'</span>s Land of the Free</h1>
-    <div class="grid" id="browserGrid"></div>
-    <hr class="section-divider" id="section-divider">
-    <div class="grid" id="gameGrid"></div>
-</div>
+            <div id="home-content">
+                <h1>Lord Tanka Jahari<span class="secret-apostrophe" onclick="openAdminPasswordModal()">'</span>s Land of the Free</h1>
+                <div class="grid" id="gameGrid"></div>
+                <hr class="section-divider" id="section-divider">
+                <div class="grid" id="browserGrid"></div>
+            </div>
         </div>
     </div>
 
@@ -636,58 +632,52 @@
             return card;
         }
 
-function renderGames() {
-    const fullGrid = document.getElementById('gameGrid');
-    const browserGrid = document.getElementById('browserGrid');
-    fullGrid.innerHTML = '';
-    browserGrid.innerHTML = '';
+        function renderGames() {
+            const fullGrid = document.getElementById('gameGrid');
+            const browserGrid = document.getElementById('browserGrid');
+            fullGrid.innerHTML = '';
+            browserGrid.innerHTML = '';
+            const sortFn = (a, b) => a.name.localeCompare(b.name);
+            fullGames.sort(sortFn).forEach(g => fullGrid.appendChild(makeCard(g, false)));
+            browserGames.sort(sortFn).forEach(g => browserGrid.appendChild(makeCard(g, false)));
+            [...customGames].sort(sortFn).forEach((g) => {
+                const originalIndex = customGames.indexOf(g);
+                browserGrid.appendChild(makeCard(g, true, originalIndex));
+            });
+            const addCard = document.createElement('div');
+            addCard.className = 'card add-btn-card';
+            addCard.innerHTML = '<div class="add-icon">+</div><div class="label"><span>ADD GAME</span></div>';
+            addCard.onclick = () => { editingIndex = -1; openAddModal(); };
+            browserGrid.appendChild(addCard);
+        }
 
-    const sortFn = (a, b) => a.name.localeCompare(b.name);
+        window.scrollToSection = function(section) {
+            const homeContent = document.getElementById('home-content');
+            if (section === 'spectacular') {
+                homeContent.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                const divider = document.getElementById('section-divider');
+                homeContent.scrollTo({ top: divider.offsetTop - 60, behavior: 'smooth' });
+            }
+        };
 
-    browserGames.sort(sortFn).forEach(g => browserGrid.appendChild(makeCard(g, false)));
-    [...customGames].sort(sortFn).forEach((g) => {
-        const originalIndex = customGames.indexOf(g);
-        browserGrid.appendChild(makeCard(g, true, originalIndex));
-    });
-
-    const addCard = document.createElement('div');
-    addCard.className = 'card add-btn-card';
-    addCard.innerHTML = '<div class="add-icon">+</div><div class="label"><span>ADD GAME</span></div>';
-    addCard.onclick = () => { editingIndex = -1; openAddModal(); };
-    browserGrid.appendChild(addCard);
-
-    fullGames.sort(sortFn).forEach(g => fullGrid.appendChild(makeCard(g, false)));
-}
-
-window.scrollToSection = function(section) {
-    const homeContent = document.getElementById('home-content');
-    if (section === 'cool') {
-        homeContent.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-        const divider = document.getElementById('section-divider');
-        homeContent.scrollTo({ top: divider.offsetTop - 60, behavior: 'smooth' });
-    }
-};
-
-function updateSidebarLabels() {
-    const homeContent = document.getElementById('home-content');
-    const divider = document.getElementById('section-divider');
-    const scrollTop = homeContent.scrollTop;
-    const viewportHeight = homeContent.clientHeight;
-    const dividerTop = divider.offsetTop;
-    const midpoint = scrollTop + viewportHeight / 2;
-
-    const labelSpec = document.getElementById('label-spectacular');
-    const labelCool = document.getElementById('label-cool');
-
-    if (midpoint < dividerTop) {
-        labelCool.classList.add('active');
-        labelSpec.classList.remove('active');
-    } else {
-        labelCool.classList.remove('active');
-        labelSpec.classList.add('active');
-    }
-}
+        function updateSidebarLabels() {
+            const homeContent = document.getElementById('home-content');
+            const divider = document.getElementById('section-divider');
+            const scrollTop = homeContent.scrollTop;
+            const viewportHeight = homeContent.clientHeight;
+            const dividerTop = divider.offsetTop;
+            const midpoint = scrollTop + viewportHeight / 2;
+            const labelSpec = document.getElementById('label-spectacular');
+            const labelCool = document.getElementById('label-cool');
+            if (midpoint < dividerTop) {
+                labelSpec.classList.add('active');
+                labelCool.classList.remove('active');
+            } else {
+                labelSpec.classList.remove('active');
+                labelCool.classList.add('active');
+            }
+        }
         document.getElementById('home-content').addEventListener('scroll', updateSidebarLabels);
 
         let searchActive = false;
