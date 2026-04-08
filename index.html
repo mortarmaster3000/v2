@@ -432,15 +432,15 @@
             </div>
 
             <div id="section-sidebar">
-                <span class="section-label" id="label-cool" onclick="scrollToSection('cool')">Cool Games</span>
-                <span class="section-label active" id="label-spectacular" onclick="scrollToSection('spectacular')">Spectacular Games</span>
+                <span class="section-label active" id="label-cool" onclick="scrollToSection('cool')">Cool Games</span>
+<span class="section-label" id="label-spectacular" onclick="scrollToSection('spectacular')">Spectacular Games</span>
             </div>
 
 <div id="home-content">
     <h1>Lord Tanka Jahari<span class="secret-apostrophe" onclick="openAdminPasswordModal()">'</span>s Land of the Free</h1>
-    <div  id="browserGrid"></div>
+    <div  id="gameGrid"></div>
     <hr class="section-divider" id="section-divider">
-    <div class="grid" id="gameGrid"></div>
+    <div class="grid" id="browserGrid"></div>
 </div>
         </div>
     </div>
@@ -653,15 +653,15 @@
             browserGrid.appendChild(addCard);
         }
 
-        window.scrollToSection = function(section) {
-            const homeContent = document.getElementById('home-content');
-            if (section === 'spectacular') {
-                homeContent.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-                const divider = document.getElementById('section-divider');
-                homeContent.scrollTo({ top: divider.offsetTop - 60, behavior: 'smooth' });
-            }
-        };
+window.scrollToSection = function(section) {
+    const homeContent = document.getElementById('home-content');
+    if (section === 'cool') {
+        homeContent.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+        const divider = document.getElementById('section-divider');
+        homeContent.scrollTo({ top: divider.offsetTop - 60, behavior: 'smooth' });
+    }
+};
 
         function updateSidebarLabels() {
             const homeContent = document.getElementById('home-content');
@@ -672,13 +672,13 @@
             const midpoint = scrollTop + viewportHeight / 2;
             const labelSpec = document.getElementById('label-spectacular');
             const labelCool = document.getElementById('label-cool');
-            if (midpoint < dividerTop) {
-                labelSpec.classList.add('active');
-                labelCool.classList.remove('active');
-            } else {
-                labelSpec.classList.remove('active');
-                labelCool.classList.add('active');
-            }
+if (midpoint < dividerTop) {
+    labelCool.classList.add('active');
+    labelSpec.classList.remove('active');
+} else {
+    labelCool.classList.remove('active');
+    labelSpec.classList.add('active');
+}
         }
         document.getElementById('home-content').addEventListener('scroll', updateSidebarLabels);
 
