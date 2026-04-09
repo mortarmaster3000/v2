@@ -7,49 +7,15 @@
         :root { --p: #050505; --s: #9300ee; }
         html, body { margin:0; padding:0; background:var(--p); color:#fff; font-family:sans-serif; transition: 0.3s; overflow: hidden; height: 100vh; }
         
-        #tab-bar { 
-            background: var(--p); 
-            border-bottom: 2px solid var(--s); 
-            display: flex; 
-            align-items: flex-end;
-            height: 40px;
-            overflow-x: auto;
-            overflow-y: hidden;
-        }
+        #tab-bar { background: var(--p); border-bottom: 2px solid var(--s); display: flex; align-items: flex-end; height: 40px; overflow-x: auto; overflow-y: hidden; }
         #tab-bar::-webkit-scrollbar { height: 4px; }
         #tab-bar::-webkit-scrollbar-track { background: #111; }
         #tab-bar::-webkit-scrollbar-thumb { background: var(--s); border-radius: 2px; }
         
-        .tab-item {
-            background: #111;
-            border: 1px solid #333;
-            border-bottom: none;
-            padding: 8px 12px;
-            margin: 0 2px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            min-width: 150px;
-            max-width: 200px;
-            border-radius: 8px 8px 0 0;
-            transition: 0.2s;
-            position: relative;
-            white-space: nowrap;
-            animation: slideIn 0.2s ease-out;
-        }
-        
-        @keyframes slideIn {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+        .tab-item { background: #111; border: 1px solid #333; border-bottom: none; padding: 8px 12px; margin: 0 2px; cursor: pointer; display: flex; align-items: center; gap: 8px; min-width: 150px; max-width: 200px; border-radius: 8px 8px 0 0; transition: 0.2s; position: relative; white-space: nowrap; animation: slideIn 0.2s ease-out; }
+        @keyframes slideIn { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .tab-item:hover { background: #1a1a1a; }
-        .tab-item.active { 
-            background: var(--p); 
-            border-color: var(--s);
-            border-bottom: 2px solid var(--p);
-            margin-bottom: -2px;
-        }
+        .tab-item.active { background: var(--p); border-color: var(--s); border-bottom: 2px solid var(--p); margin-bottom: -2px; }
         .tab-icon { width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0; }
         .tab-title { flex: 1; overflow: hidden; text-overflow: ellipsis; font-size: 13px; }
         .tab-close { width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s; flex-shrink: 0; }
@@ -67,71 +33,24 @@
         .home-ui-element.request { bottom: 70px; left: 20px; }
         .home-ui-element.version { bottom: 20px; right: 20px; color: #666; font-size: 12px; font-family: monospace; cursor: pointer; transition: color 0.2s; }
         .home-ui-element.version:hover { color: var(--s); }
-        .home-ui-element .info-btn { margin: 0; cursor: pointer; }
-        .home-ui-element .request-btn { margin: 0; cursor: pointer; }
         
         #version-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; align-items:center; justify-content:center; }
         #version-modal.show { display: flex; animation: fadeIn 0.3s ease-out; }
         #version-modal.show .box-large { animation: slideUp 0.4s ease-out; }
-        
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { from { transform: translateY(100vh); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
-        #home-content { 
-    padding: 60px 40px 60px 30px;
-            display: flex; 
-            flex-direction: column; 
-            align-items: center;
-            overflow-y: auto;
-            height: 100%;
-            box-sizing: border-box;
-            position: relative;
-        }
+        #home-content { padding: 60px 40px 60px 160px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; height: 100%; box-sizing: border-box; position: relative; }
 
-        #section-sidebar {
-    position: fixed;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    pointer-events: none;
-    width: 18px;
-}
-.section-label {
-    font-size: 9px;
-    font-weight: 400;
-    letter-spacing: 2px;
-    color: #444;
-    text-transform: uppercase;
-    cursor: pointer;
-    pointer-events: all;
-    transition: color 0.3s, font-weight 0.3s;
-    user-select: none;
-    padding: 4px 0;
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    transform: rotate(180deg);
-    white-space: nowrap;
-}
-        .section-label.active {
-            color: var(--s);
-            font-weight: 700;
-        }
-
-        .section-divider {
-            width: 100%;
-            max-width: 1200px;
-            border: none;
-            border-top: 1px solid #222;
-            margin: 40px 0;
-        }
+        #section-sidebar { position: fixed; left: 20px; top: 50%; transform: translateY(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 20px; pointer-events: none; }
+        .section-label { font-size: 11px; font-weight: 400; letter-spacing: 2px; color: #444; text-transform: uppercase; cursor: pointer; pointer-events: all; transition: color 0.3s, font-weight 0.3s; user-select: none; padding: 6px 0; }
+        .section-label.active { color: var(--s); font-weight: 700; }
+        .section-divider { width: 100%; max-width: 1200px; border: none; border-top: 1px solid #222; margin: 40px 0; }
 
         h1 { color:var(--s) !important; text-shadow:0 0 10px var(--s); letter-spacing:4px; font-weight:300; margin-bottom: 30px; text-align:center; text-transform: uppercase; }
         .grid { display:grid; grid-template-columns:repeat(auto-fill, 250px); gap:20px; width:100%; max-width:1200px; justify-content:center; }
-.card { background:#111; border:1px solid #222; border-radius:12px; height:225px; cursor:pointer; overflow:hidden; position:relative; transition:0.3s; transform: scale(0.9); transform-origin: center;}        .card:hover { border-color:var(--s); transform:translateY(-5px); box-shadow:0 0 15px var(--s); }
+        .card { background:#111; border:1px solid #222; border-radius:12px; height:250px; cursor:pointer; overflow:hidden; position:relative; transition:0.3s; }
+        .card:hover { border-color:var(--s); transform:translateY(-5px); box-shadow:0 0 15px var(--s); }
         .img { width:100%; height:100%; background-size:cover; background-position:center; }
         .label { position:absolute; bottom:0; width:100%; background:rgba(0,0,0,0.85); padding:10px 0; text-align:center; font-weight:bold; font-size: 14px; z-index: 2; }
         .card-action { position: absolute; bottom: 40px; display: flex; opacity: 0; transition: 0.2s; z-index: 10; }
@@ -144,6 +63,7 @@
         .mini-btn svg { fill: #fff; width: 16px; height: 16px; }
         .card.add-btn-card { border: 2px dashed #333; background: transparent; display: flex; align-items: center; justify-content: center; }
         .add-icon { font-size: 50px; color: #333; transition: 0.3s; }
+
         #modal, #add-modal, #confirm-modal, #notice-modal, #info-modal, #version-modal, #admin-password-modal, #admin-modal, #request-modal, #delete-confirm-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; align-items:center; justify-content:center; }
         .box-large { background:#111; border:2px solid var(--s); border-radius:16px; width:600px; overflow:hidden; display: flex; flex-direction: column; }
         .modal-header { padding:25px; background:#1a1a1a; border-bottom:1px solid var(--s); text-align:center; font-size:20px; font-weight:bold; color:var(--s); text-transform: uppercase; }
@@ -163,7 +83,6 @@
         
         .btn-row { display:flex; gap:12px; padding: 25px 40px; background: #111; border-top: 1px solid #222; align-items: center; }
         .action-btn { flex:1; padding:18px; border-radius:8px; cursor:pointer; font-weight:bold; font-size: 12px; text-transform: uppercase; border: none; transition: 0.2s; white-space: nowrap; }
-        
         .save-btn { background:var(--s); color:#fff; }
         .save-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
         .cancel-btn { background:#222; color:#fff; border: 1px solid #444; }
@@ -191,7 +110,6 @@
         .tab-content-modal.active { display:block; }
         .secret-apostrophe { cursor: default; }
         
-        .requests-section { margin-top: 20px; }
         .request-item { background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin-bottom: 15px; }
         .request-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .request-game-name { font-size: 16px; font-weight: bold; color: var(--s); }
@@ -204,15 +122,14 @@
     </style>
 </head>
 <body>
+
     <div id="info-modal">
         <div class="box-large" style="width: 450px; text-align: center;">
             <div class="modal-header">TANKA'S WISDOM</div>
             <div class="modal-body" style="height: auto; padding: 30px;">
                 <p style="margin-bottom: 20px; line-height: 1.5; color: #ccc;">If a game is blocked when opened, try reopening a few times before reporting it to Lord Tanka.</p>
             </div>
-            <div class="btn-row">
-                <button class="action-btn save-btn" onclick="closeModals()">OK</button>
-            </div>
+            <div class="btn-row"><button class="action-btn save-btn" onclick="closeModals()">OK</button></div>
         </div>
     </div>
 
@@ -222,9 +139,7 @@
             <div class="modal-body" style="height: auto; padding: 30px;">
                 <p id="success-message" style="margin-bottom: 20px; line-height: 1.5; color: #ccc;">Request sent without blowing up</p>
             </div>
-            <div class="btn-row">
-                <button class="action-btn save-btn" onclick="closeModals()">OK</button>
-            </div>
+            <div class="btn-row"><button class="action-btn save-btn" onclick="closeModals()">OK</button></div>
         </div>
     </div>
 
@@ -234,9 +149,7 @@
             <div class="modal-body" style="height: auto; padding: 30px;">
                 <p id="error-message" style="margin-bottom: 20px; line-height: 1.5; color: #ccc;">Failed to send request. Please try again.</p>
             </div>
-            <div class="btn-row">
-                <button class="action-btn save-btn" onclick="closeModals()">OK</button>
-            </div>
+            <div class="btn-row"><button class="action-btn save-btn" onclick="closeModals()">OK</button></div>
         </div>
     </div>
 
@@ -275,15 +188,14 @@
         <div class="box-large" style="width: 450px; text-align: left;">
             <div class="modal-header">v4</div>
             <div class="modal-body" style="height: auto; padding: 30px;">
-                <p style="margin-bottom: 20px; line-height: 1.5; color: #ccc;"><span style="font-size: 16px; font-weight: bold;">Added:</span><br>
+                <p style="margin-bottom: 20px; line-height: 1.5; color: #ccc;">
+                    <span style="font-size: 16px; font-weight: bold;">Added:</span><br>
                     <span style="display: block; padding-left: 20px;"><br> - Added some spectacular new games<br> - Game sections<br></span>
                     <span style="font-size: 16px; font-weight: bold;">Fixed:</span><br>
                     <span style="display: block; padding-left: 20px;"><br> - Removed Epstein (truly removed for good)</span>
                 </p>
             </div>
-            <div class="btn-row">
-                <button class="action-btn save-btn" onclick="closeVersionModal()">OK</button>
-            </div>
+            <div class="btn-row"><button class="action-btn save-btn" onclick="closeVersionModal()">OK</button></div>
         </div>
     </div>
 
@@ -309,16 +221,10 @@
                 <div class="tab-modal" data-tab="admin-reports-tab">BUG REPORTS</div>
             </div>
             <div class="modal-body" style="height: auto; max-height: calc(90vh - 160px); padding: 40px;">
-                <div id="admin-requests-tab" class="tab-content-modal active">
-                    <div id="requestsList"></div>
-                </div>
-                <div id="admin-reports-tab" class="tab-content-modal">
-                    <div id="bugReportsList"></div>
-                </div>
+                <div id="admin-requests-tab" class="tab-content-modal active"><div id="requestsList"></div></div>
+                <div id="admin-reports-tab" class="tab-content-modal"><div id="bugReportsList"></div></div>
             </div>
-            <div class="btn-row">
-                <button class="action-btn cancel-btn" onclick="closeAdminModal()">Close</button>
-            </div>
+            <div class="btn-row"><button class="action-btn cancel-btn" onclick="closeAdminModal()">Close</button></div>
         </div>
     </div>
 
@@ -331,9 +237,7 @@
                     <input type="checkbox" id="stopNotice" style="margin-right: 10px;"> Don't tell me again
                 </label>
             </div>
-            <div class="btn-row">
-                <button class="action-btn save-btn" onclick="closeNotice()">OK</button>
-            </div>
+            <div class="btn-row"><button class="action-btn save-btn" onclick="closeNotice()">OK</button></div>
         </div>
     </div>
 
@@ -428,22 +332,18 @@
                 <input type="text" id="search-input" placeholder="Search games...">
             </div>
             <div id="search-trigger" onclick="toggleSearch()">
-                <svg viewBox="0 0 24 24">
-                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-                </svg>
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
             </div>
-
             <div id="section-sidebar">
-                <span class="section-label" id="label-cool" onclick="scrollToSection('cool')">Cool Games</span>
                 <span class="section-label active" id="label-spectacular" onclick="scrollToSection('spectacular')">Spectacular Games</span>
+                <span class="section-label" id="label-cool" onclick="scrollToSection('cool')">Cool Games</span>
             </div>
-
-<div id="home-content">
-    <h1>Lord Tanka Jahari<span class="secret-apostrophe" onclick="openAdminPasswordModal()">'</span>s Land of the Free</h1>
-    <div class="grid" id="gameGrid"></div>
-    <hr class="section-divider" id="section-divider">
-    <div class="grid" id="browserGrid"></div>
-</div>
+            <div id="home-content">
+                <h1>Lord Tanka Jahari<span class="secret-apostrophe" onclick="openAdminPasswordModal()">'</span>s Land of the Free</h1>
+                <div class="grid" id="gameGrid"></div>
+                <hr class="section-divider" id="section-divider">
+                <div class="grid" id="browserGrid"></div>
+            </div>
         </div>
     </div>
 
@@ -466,22 +366,14 @@
 
         const userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         const userRef = ref(database, 'users/' + userId);
-
         set(userRef, { joinedAt: Date.now(), lastSeen: Date.now() });
-
-        const visitsRef = ref(database, 'stats/totalVisits');
-        get(visitsRef).then((snapshot) => {
-            const currentVisits = snapshot.val() || 0;
-            set(visitsRef, currentVisits + 1);
-        });
-
+        get(ref(database, 'stats/totalVisits')).then(s => set(ref(database, 'stats/totalVisits'), (s.val() || 0) + 1));
         onDisconnect(userRef).remove();
-        setInterval(() => { update(userRef, { lastSeen: Date.now() }); }, 30000);
+        setInterval(() => update(userRef, { lastSeen: Date.now() }), 30000);
 
         const fullGames = [
             { name: "Hollow Knight", url: "https://mhikarup.github.io/hollowknightunblocked/", img: "https://composerlarkin.com/wp-content/uploads/2017/02/soundtrack_cover.jpg" },
-            { name: "Hollow Knight: Silksong", url: "https://truffled.lol/games/silk/index.html", img: "https://truffled.lol/png/games/silk.webp" },
-            { name: "Half Life", url: "https://truffled.lol/games/hl-main/index.html", img:"https://truffled.lol/png/games/halflife.webp" },
+            { name: "Half Life", url: "https://truffled.lol/games/hl-main/index.html", img: "https://truffled.lol/png/games/halflife.webp" },
             { name: "Half Life: Opposing Force", url: "https://truffled.lol/gamefile/hlof.html", img: "https://truffled.lol/png/games/hlof.webp" },
             { name: "Fallout", url: "https://truffled.lol/gamefile/falloutt.html", img: "https://truffled.lol/png/games/fallout.webp" },
             { name: "Fallout 2", url: "https://truffled.lol/games/fo2/index.html", img: "https://truffled.lol/png/games/fallout2.webp" },
@@ -520,7 +412,7 @@
             { name: "Monkey Mart", url: "https://ubg98.github.io/MonkeyMart/", img: "https://play-lh.googleusercontent.com/rWReIdyvDaYJPeOxn7hbC0b-96ixGpQKM_EndiQa3SUME8TtI_rNUcI4qsw5teK9mqk=w240-h480-rw" },
             { name: "DigDig.io", url: "https://digdig.io/", img: "https://kevin.games/assets/images/index/digdig-io.jpg" },
             { name: "Gold Digger FRVR", url: "https://golddigger.frvr.com/", img: "https://play-lh.googleusercontent.com/1ZntzjEjh1dQoS8MPvVqSH_5IHHo2TbfyJdaNa_0G-5Iox_tfbkqeAkkeTiQMiaMPhGe" },
-            { name: "Idle Ant", url: "https://scorzy.github.io/IdleAnt/", img:"https://image2url.com/r2/default/images/1768875268489-89e5325a-0eaa-49fd-b80c-ad4da69745a2.png" },
+            { name: "Idle Ant", url: "https://scorzy.github.io/IdleAnt/", img: "https://image2url.com/r2/default/images/1768875268489-89e5325a-0eaa-49fd-b80c-ad4da69745a2.png" },
             { name: "Tanka Jahari's Communication Service", url: "https://mortarmaster3000.github.io", img: "https://preview.redd.it/tanka-jahari-v0-oh7y8cctnu7g1.jpeg?width=320&crop=smart&auto=webp&s=663f5349d34b3bac660e033e8527fc8f5293e575" },
             { name: "Skribbl.io", url: "https://skribbl.io/", img: "https://skribbl.io/img/thumbnail.png" },
             { name: "Bitlife", url: "https://xlegends.github.io/bitlife/", img: "https://i.ytimg.com/vi/WUTrv--kZtI/maxresdefault.jpg" },
@@ -532,18 +424,14 @@
             { name: "Bloons TD 4", url: "https://mountain658.github.io/g/btd4/index.html", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVeVofXSpRODBfgxgrGwNAT1h_xsqr4SiQd_D8ac7Pk1C7e-bh6CP40CTUhBxQOB_LCF-UGg&s=10" }
         ];
 
-        const colorPalette = ["#FF0000", "#FF4500", "#FFA500", "#FFFF00", "#ADFF2F", "#00FF00", "#00FF7F", "#00FFFF", "#00BFFF", "#0000FF", "#4B0082", "#9300EE", "#FF00FF", "#FF69B4", "#FFC0CB", "#FFFFFF", "#8B4513", "#666666", "#2F4F4F", "#1A1A1A", "#050505"];
+        const colorPalette = ["#FF0000","#FF4500","#FFA500","#FFFF00","#ADFF2F","#00FF00","#00FF7F","#00FFFF","#00BFFF","#0000FF","#4B0082","#9300EE","#FF00FF","#FF69B4","#FFC0CB","#FFFFFF","#8B4513","#666666","#2F4F4F","#1A1A1A","#050505"];
 
         let pUrl = "https://classroom.google.com";
         let pKey = { k: "x", c: true, s: false, a: false };
-        let pCol = "#050505";
-        let sCol = "#9300ee";
-        let customGames = [];
-        let editingIndex = -1;
-        let deletingIndex = -1;
+        let pCol = "#050505", sCol = "#9300ee";
+        let customGames = [], editingIndex = -1, deletingIndex = -1;
         let tempP = pCol, tempS = sCol, tempKey = {...pKey}, activeTab = "general";
-        let tabCounter = 0;
-        let openTabs = {};
+        let tabCounter = 0, openTabs = {};
 
         function loadUserData() {
             try {
@@ -554,13 +442,12 @@
                     if (data.theme) { pCol = data.theme.primary || "#050505"; sCol = data.theme.secondary || "#9300ee"; apply(pCol, sCol); }
                     if (data.settings) { pUrl = data.settings.panicUrl || "https://classroom.google.com"; pKey = data.settings.panicKey || { k: "x", c: true, s: false, a: false }; }
                 }
-            } catch (error) { console.error('Error loading data:', error); }
+            } catch(e) { console.error(e); }
         }
 
         function saveUserData() {
-            try {
-                localStorage.setItem('tankaJahariData', JSON.stringify({ customGames, theme: { primary: pCol, secondary: sCol }, settings: { panicUrl: pUrl, panicKey: pKey }, lastUpdated: Date.now() }));
-            } catch (error) { console.error('Error saving data:', error); }
+            try { localStorage.setItem('tankaJahariData', JSON.stringify({ customGames, theme: { primary: pCol, secondary: sCol }, settings: { panicUrl: pUrl, panicKey: pKey }, lastUpdated: Date.now() })); }
+            catch(e) { console.error(e); }
         }
 
         function apply(p, s) { document.documentElement.style.setProperty('--p', p); document.documentElement.style.setProperty('--s', s); }
@@ -574,27 +461,26 @@
         };
 
         window.closeNotice = function() {
-            const checkbox = document.getElementById('stopNotice');
-            if (checkbox.checked) localStorage.setItem('tankaJahariNoNotice', 'true');
+            if (document.getElementById('stopNotice').checked) localStorage.setItem('tankaJahariNoNotice', 'true');
             document.getElementById('notice-modal').style.display = 'none';
-            document.getElementById('add-modal').style.display = "flex";
+            document.getElementById('add-modal').style.display = 'flex';
         };
 
         window.closeVersionModal = () => {
-            const modal = document.getElementById('version-modal');
-            modal.classList.remove('show');
-            setTimeout(() => { modal.style.display = 'none'; }, 300);
+            const m = document.getElementById('version-modal');
+            m.classList.remove('show');
+            setTimeout(() => { m.style.display = 'none'; }, 300);
         };
 
         window.openVersionModal = () => {
-            const modal = document.getElementById('version-modal');
-            modal.style.display = 'flex';
-            setTimeout(() => { modal.classList.add('show'); }, 10);
+            const m = document.getElementById('version-modal');
+            m.style.display = 'flex';
+            setTimeout(() => m.classList.add('show'), 10);
         };
 
         window.openNoticeManual = function() {
-            document.getElementById('add-modal').style.display = "none";
-            document.getElementById('notice-modal').style.display = "flex";
+            document.getElementById('add-modal').style.display = 'none';
+            document.getElementById('notice-modal').style.display = 'flex';
         };
 
         function openAddModal() {
@@ -603,11 +489,10 @@
                 document.getElementById('newGameUrl').value = "";
                 document.getElementById('newGameImg').value = "";
                 document.getElementById('add-modal-title').innerText = "Add Game";
-                const noNotice = localStorage.getItem('tankaJahariNoNotice');
-                if (noNotice === 'true') { document.getElementById('add-modal').style.display = "flex"; }
-                else { document.getElementById('notice-modal').style.display = "flex"; }
+                if (localStorage.getItem('tankaJahariNoNotice') === 'true') document.getElementById('add-modal').style.display = 'flex';
+                else document.getElementById('notice-modal').style.display = 'flex';
             } else {
-                document.getElementById('add-modal').style.display = "flex";
+                document.getElementById('add-modal').style.display = 'flex';
             }
             window.validateForm();
         }
@@ -617,16 +502,8 @@
             card.className = 'card';
             if (isCustom) {
                 card.innerHTML = `
-                    <div class="card-action edit-pos">
-                        <div class="mini-btn" onclick="event.stopPropagation(); editGame(${originalIndex})">
-                            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-                        </div>
-                    </div>
-                    <div class="card-action del-pos">
-                        <div class="mini-btn del" onclick="event.stopPropagation(); showConfirm(${originalIndex})">
-                            <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                        </div>
-                    </div>
+                    <div class="card-action edit-pos"><div class="mini-btn" onclick="event.stopPropagation();editGame(${originalIndex})"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></div></div>
+                    <div class="card-action del-pos"><div class="mini-btn del" onclick="event.stopPropagation();showConfirm(${originalIndex})"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></div></div>
                     <div class="img" style="background-image:url('${g.img}')"></div>
                     <div class="label"><span>${g.name}</span></div>`;
             } else {
@@ -637,137 +514,101 @@
         }
 
         function renderGames() {
-            const fullGrid = document.getElementById('gameGrid');
-            const browserGrid = document.getElementById('browserGrid');
-            fullGrid.innerHTML = '';
-            browserGrid.innerHTML = '';
-            const sortFn = (a, b) => a.name.localeCompare(b.name);
-            fullGames.sort(sortFn).forEach(g => fullGrid.appendChild(makeCard(g, false)));
-            browserGames.sort(sortFn).forEach(g => browserGrid.appendChild(makeCard(g, false)));
-            [...customGames].sort(sortFn).forEach((g) => {
-                const originalIndex = customGames.indexOf(g);
-                browserGrid.appendChild(makeCard(g, true, originalIndex));
-            });
-            const addCard = document.createElement('div');
-            addCard.className = 'card add-btn-card';
-            addCard.innerHTML = '<div class="add-icon">+</div><div class="label"><span>ADD GAME</span></div>';
-            addCard.onclick = () => { editingIndex = -1; openAddModal(); };
-            browserGrid.appendChild(addCard);
+            const fg = document.getElementById('gameGrid');
+            const bg = document.getElementById('browserGrid');
+            fg.innerHTML = ''; bg.innerHTML = '';
+            const sort = (a, b) => a.name.localeCompare(b.name);
+            fullGames.sort(sort).forEach(g => fg.appendChild(makeCard(g, false)));
+            browserGames.sort(sort).forEach(g => bg.appendChild(makeCard(g, false)));
+            [...customGames].sort(sort).forEach(g => bg.appendChild(makeCard(g, true, customGames.indexOf(g))));
+            const add = document.createElement('div');
+            add.className = 'card add-btn-card';
+            add.innerHTML = '<div class="add-icon">+</div><div class="label"><span>ADD GAME</span></div>';
+            add.onclick = () => { editingIndex = -1; openAddModal(); };
+            bg.appendChild(add);
         }
 
         window.scrollToSection = function(section) {
-            const homeContent = document.getElementById('home-content');
-            if (section === 'spectacular') {
-                homeContent.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-                const divider = document.getElementById('section-divider');
-                homeContent.scrollTo({ top: divider.offsetTop - 60, behavior: 'smooth' });
-            }
+            const hc = document.getElementById('home-content');
+            if (section === 'spectacular') hc.scrollTo({ top: 0, behavior: 'smooth' });
+            else hc.scrollTo({ top: document.getElementById('section-divider').offsetTop - 60, behavior: 'smooth' });
         };
 
         function updateSidebarLabels() {
-            const homeContent = document.getElementById('home-content');
-            const divider = document.getElementById('section-divider');
-            const scrollTop = homeContent.scrollTop;
-            const viewportHeight = homeContent.clientHeight;
-            const dividerTop = divider.offsetTop;
-            const midpoint = scrollTop + viewportHeight / 2;
-            const labelSpec = document.getElementById('label-spectacular');
-            const labelCool = document.getElementById('label-cool');
-            if (midpoint < dividerTop) {
-                labelSpec.classList.add('active');
-                labelCool.classList.remove('active');
-            } else {
-                labelSpec.classList.remove('active');
-                labelCool.classList.add('active');
-            }
+            const hc = document.getElementById('home-content');
+            const mid = hc.scrollTop + hc.clientHeight / 2;
+            const div = document.getElementById('section-divider').offsetTop;
+            document.getElementById('label-spectacular').classList.toggle('active', mid < div);
+            document.getElementById('label-cool').classList.toggle('active', mid >= div);
         }
         document.getElementById('home-content').addEventListener('scroll', updateSidebarLabels);
 
         let searchActive = false;
         window.toggleSearch = function() {
             searchActive = !searchActive;
-            const container = document.getElementById('search-container');
-            const input = document.getElementById('search-input');
-            if (searchActive) { container.classList.add('active'); setTimeout(() => input.focus(), 300); }
-            else { container.classList.remove('active'); input.value = ''; renderGames(); }
+            const c = document.getElementById('search-container');
+            const i = document.getElementById('search-input');
+            if (searchActive) { c.classList.add('active'); setTimeout(() => i.focus(), 300); }
+            else { c.classList.remove('active'); i.value = ''; renderGames(); }
         };
 
         function searchGames(query) {
             if (!query.trim()) { renderGames(); return; }
-            const fullGrid = document.getElementById('gameGrid');
-            const browserGrid = document.getElementById('browserGrid');
-            fullGrid.innerHTML = '';
-            browserGrid.innerHTML = '';
-            const lowerQuery = query.toLowerCase();
-            const sortFn = (a, b) => a.name.localeCompare(b.name);
-            fullGames.filter(g => g.name.toLowerCase().includes(lowerQuery)).sort(sortFn).forEach(g => fullGrid.appendChild(makeCard(g, false)));
-            browserGames.filter(g => g.name.toLowerCase().includes(lowerQuery)).sort(sortFn).forEach(g => browserGrid.appendChild(makeCard(g, false)));
-            customGames.filter(g => g.name.toLowerCase().includes(lowerQuery)).sort(sortFn).forEach(g => {
-                const originalIndex = customGames.indexOf(g);
-                browserGrid.appendChild(makeCard(g, true, originalIndex));
-            });
-            const addCard = document.createElement('div');
-            addCard.className = 'card add-btn-card';
-            addCard.innerHTML = '<div class="add-icon">+</div><div class="label"><span>ADD GAME</span></div>';
-            addCard.onclick = () => { editingIndex = -1; openAddModal(); };
-            browserGrid.appendChild(addCard);
+            const fg = document.getElementById('gameGrid');
+            const bg = document.getElementById('browserGrid');
+            fg.innerHTML = ''; bg.innerHTML = '';
+            const q = query.toLowerCase();
+            const sort = (a, b) => a.name.localeCompare(b.name);
+            fullGames.filter(g => g.name.toLowerCase().includes(q)).sort(sort).forEach(g => fg.appendChild(makeCard(g, false)));
+            browserGames.filter(g => g.name.toLowerCase().includes(q)).sort(sort).forEach(g => bg.appendChild(makeCard(g, false)));
+            customGames.filter(g => g.name.toLowerCase().includes(q)).sort(sort).forEach(g => bg.appendChild(makeCard(g, true, customGames.indexOf(g))));
+            const add = document.createElement('div');
+            add.className = 'card add-btn-card';
+            add.innerHTML = '<div class="add-icon">+</div><div class="label"><span>ADD GAME</span></div>';
+            add.onclick = () => { editingIndex = -1; openAddModal(); };
+            bg.appendChild(add);
         }
 
         function openGameTab(name, url, img) {
             const tabId = `tab-${tabCounter++}`;
-            const tabBar = document.getElementById('tab-bar');
             const tabItem = document.createElement('div');
-            tabItem.className = 'tab-item';
-            tabItem.dataset.tab = tabId;
-            tabItem.innerHTML = `
-                <div class="tab-icon"><img src="${img}" style="width:100%; height:100%; object-fit:cover; border-radius:3px;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/686/686586.png'"></div>
-                <div class="tab-title">${name}</div>
-                <div class="tab-close">
-                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                </div>`;
+            tabItem.className = 'tab-item'; tabItem.dataset.tab = tabId;
+            tabItem.innerHTML = `<div class="tab-icon"><img src="${img}" style="width:100%;height:100%;object-fit:cover;border-radius:3px;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/686/686586.png'"></div><div class="tab-title">${name}</div><div class="tab-close"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></div>`;
             tabItem.onclick = (e) => { if (!e.target.closest('.tab-close')) switchTab(tabId); };
             tabItem.querySelector('.tab-close').onclick = (e) => { e.stopPropagation(); closeTab(tabId); };
-            tabBar.appendChild(tabItem);
-            const contentArea = document.getElementById('content-area');
+            document.getElementById('tab-bar').appendChild(tabItem);
             const content = document.createElement('div');
-            content.id = tabId;
-            content.className = 'tab-content';
+            content.id = tabId; content.className = 'tab-content';
             content.innerHTML = `<iframe src="${url}"></iframe>`;
-            contentArea.appendChild(content);
+            document.getElementById('content-area').appendChild(content);
             openTabs[tabId] = { name, url, img, element: tabItem, content };
             switchTab(tabId);
         }
 
         window.switchTab = function(tabId) {
             document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-            const targetTab = document.querySelector(`.tab-item[data-tab="${tabId}"]`);
-            if (targetTab) targetTab.classList.add('active');
+            document.querySelector(`.tab-item[data-tab="${tabId}"]`)?.classList.add('active');
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            const targetContent = document.getElementById(tabId);
-            if (targetContent) targetContent.classList.add('active');
-            const homeElements = document.querySelectorAll('.home-ui-element');
-            homeElements.forEach(el => { el.style.display = (tabId === 'home') ? 'block' : 'none'; });
-            const sidebar = document.getElementById('section-sidebar');
-            if (sidebar) sidebar.style.display = (tabId === 'home') ? 'flex' : 'none';
+            document.getElementById(tabId)?.classList.add('active');
+            document.querySelectorAll('.home-ui-element').forEach(el => el.style.display = (tabId === 'home') ? 'block' : 'none');
+            const sb = document.getElementById('section-sidebar');
+            if (sb) sb.style.display = (tabId === 'home') ? 'flex' : 'none';
         };
 
         function closeTab(tabId) {
-            if (tabId === 'home') return;
             const tab = openTabs[tabId];
             if (tab) {
                 const wasActive = tab.content.classList.contains('active');
-                tab.element.remove();
-                tab.content.remove();
+                tab.element.remove(); tab.content.remove();
                 delete openTabs[tabId];
                 if (wasActive) window.switchTab('home');
             }
         }
 
-        window.showConfirm = function(index) { deletingIndex = index; document.getElementById('confirm-modal').style.display = "flex"; };
+        window.showConfirm = function(index) { deletingIndex = index; document.getElementById('confirm-modal').style.display = 'flex'; };
 
         document.getElementById('executeDelete').onclick = () => {
-            if(deletingIndex > -1) { customGames.splice(deletingIndex, 1); saveUserData(); renderGames(); }
+            if (deletingIndex > -1) { customGames.splice(deletingIndex, 1); saveUserData(); renderGames(); }
             closeModals();
         };
 
@@ -782,40 +623,36 @@
         };
 
         function setupColors() {
-            ['pGrid', 'sGrid'].forEach(id => {
+            ['pGrid','sGrid'].forEach(id => {
                 const container = document.getElementById(id);
                 container.innerHTML = '';
                 colorPalette.forEach(c => {
                     const sq = document.createElement('div');
-                    sq.className = 'color-sq' + ( ((id==='pGrid'&&c===tempP)||(id==='sGrid'&&c===tempS)) ? ' active' : '' );
+                    sq.className = 'color-sq' + (((id==='pGrid'&&c===tempP)||(id==='sGrid'&&c===tempS))?' active':'');
                     sq.style.background = c;
-                    sq.onclick = () => {
-                        container.querySelectorAll('.color-sq').forEach(s => s.classList.remove('active'));
-                        sq.classList.add('active');
-                        if(id === 'pGrid') tempP = c; else tempS = c;
-                    };
+                    sq.onclick = () => { container.querySelectorAll('.color-sq').forEach(s=>s.classList.remove('active')); sq.classList.add('active'); if(id==='pGrid') tempP=c; else tempS=c; };
                     container.appendChild(sq);
                 });
             });
         }
 
         window.openSettings = () => {
-            tempP = pCol; tempS = sCol; tempKey = {...pKey};
+            tempP=pCol; tempS=sCol; tempKey={...pKey};
             document.getElementById('pI').value = pUrl;
             updateHotkeyBtn();
-            document.getElementById('modal').style.display = "flex";
+            document.getElementById('modal').style.display = 'flex';
             setupColors();
         };
 
         function updateHotkeyBtn() {
-            let str = ""; if(tempKey.c) str+="Ctrl+"; if(tempKey.s) str+="Shift+"; if(tempKey.a) str+="Alt+";
-            document.getElementById('kI').innerText = str + tempKey.k.toUpperCase();
+            let s=""; if(tempKey.c) s+="Ctrl+"; if(tempKey.s) s+="Shift+"; if(tempKey.a) s+="Alt+";
+            document.getElementById('kI').innerText = s + tempKey.k.toUpperCase();
         }
 
         document.getElementById('kI').onclick = function() {
             this.innerText = "...";
             const cap = (e) => {
-                if (["Control","Shift","Alt"].includes(e.key)) return;
+                if(["Control","Shift","Alt"].includes(e.key)) return;
                 e.preventDefault();
                 tempKey = { k: e.key.toLowerCase(), c: e.ctrlKey, s: e.shiftKey, a: e.altKey };
                 updateHotkeyBtn();
@@ -824,229 +661,164 @@
             window.addEventListener('keydown', cap);
         };
 
-        document.getElementById('saveSettings').onclick = () => { pUrl = document.getElementById('pI').value; pKey = {...tempKey}; pCol = tempP; sCol = tempS; apply(pCol, sCol); saveUserData(); closeModals(); };
-
+        document.getElementById('saveSettings').onclick = () => { pUrl=document.getElementById('pI').value; pKey={...tempKey}; pCol=tempP; sCol=tempS; apply(pCol,sCol); saveUserData(); closeModals(); };
         document.getElementById('tabReset').onclick = () => {
-            if(activeTab === "general") { tempKey = { k: "x", c: true, s: false, a: false }; document.getElementById('pI').value = "https://classroom.google.com"; updateHotkeyBtn(); }
-            else { tempP = "#050505"; tempS = "#9300ee"; setupColors(); }
+            if(activeTab==="general") { tempKey={k:"x",c:true,s:false,a:false}; document.getElementById('pI').value="https://classroom.google.com"; updateHotkeyBtn(); }
+            else { tempP="#050505"; tempS="#9300ee"; setupColors(); }
         };
 
         document.getElementById('confirmAddGame').onclick = () => {
             const name = document.getElementById('newGameName').value.trim();
             let url = document.getElementById('newGameUrl').value.trim();
             const img = document.getElementById('newGameImg').value.trim() || "https://cdn-icons-png.flaticon.com/512/686/686586.png";
-            if(!name || !url) return;
-            if(!url.startsWith('http')) url = 'https://' + url;
-            if(editingIndex > -1) { customGames[editingIndex] = {name, url, img}; } else { customGames.push({name, url, img}); }
+            if(!name||!url) return;
+            if(!url.startsWith('http')) url='https://'+url;
+            if(editingIndex>-1) customGames[editingIndex]={name,url,img}; else customGames.push({name,url,img});
             saveUserData(); renderGames(); closeModals();
         };
 
         window.closeModals = () => {
-            document.getElementById('modal').style.display = 'none';
-            document.getElementById('add-modal').style.display = 'none';
-            document.getElementById('confirm-modal').style.display = 'none';
-            document.getElementById('notice-modal').style.display = 'none';
-            document.getElementById('info-modal').style.display = 'none';
+            ['modal','add-modal','confirm-modal','notice-modal','info-modal','admin-password-modal','request-modal','success-modal','error-modal'].forEach(id => document.getElementById(id).style.display='none');
             window.closeVersionModal();
-            document.getElementById('admin-password-modal').style.display = 'none';
-            document.getElementById('request-modal').style.display = 'none';
-            document.getElementById('success-modal').style.display = 'none';
-            document.getElementById('error-modal').style.display = 'none';
         };
-
-        window.closeDeleteConfirm = () => { document.getElementById('delete-confirm-modal').style.display = 'none'; };
-        window.closeAdminModal = () => { document.getElementById('admin-modal').style.display = 'none'; window.closeDeleteConfirm(); };
+        window.closeDeleteConfirm = () => document.getElementById('delete-confirm-modal').style.display = 'none';
+        window.closeAdminModal = () => { document.getElementById('admin-modal').style.display='none'; window.closeDeleteConfirm(); };
 
         document.querySelectorAll('.tab-modal').forEach(t => {
             t.onclick = () => {
-                document.querySelectorAll('.tab-modal, .tab-content-modal').forEach(el => el.classList.remove('active'));
-                t.classList.add('active');
-                activeTab = t.dataset.tab;
+                document.querySelectorAll('.tab-modal,.tab-content-modal').forEach(el=>el.classList.remove('active'));
+                t.classList.add('active'); activeTab=t.dataset.tab;
                 document.getElementById(activeTab).classList.add('active');
             };
         });
 
         window.addEventListener('keydown', e => {
-            if(e.key.toLowerCase()===pKey.k && e.ctrlKey===pKey.c && e.shiftKey===pKey.s && e.altKey===pKey.a) { window.location.href = pUrl; }
+            if(e.key.toLowerCase()===pKey.k && e.ctrlKey===pKey.c && e.shiftKey===pKey.s && e.altKey===pKey.a) window.location.href=pUrl;
         });
 
         // Request modal
         let activeRequestTab = 'request-game-tab';
 
         window.openRequestModal = function() {
-            document.getElementById('request-modal').style.display = 'flex';
-            activeRequestTab = 'request-game-tab';
-            document.querySelectorAll('#request-modal .tab-modal').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('#request-modal .tab-content-modal').forEach(c => c.classList.remove('active'));
+            document.getElementById('request-modal').style.display='flex';
+            activeRequestTab='request-game-tab';
+            document.querySelectorAll('#request-modal .tab-modal').forEach(t=>t.classList.remove('active'));
+            document.querySelectorAll('#request-modal .tab-content-modal').forEach(c=>c.classList.remove('active'));
             document.querySelector('#request-modal .tab-modal[data-tab="request-game-tab"]').classList.add('active');
             document.getElementById('request-game-tab').classList.add('active');
-            document.getElementById('requestGameName').value = '';
-            document.getElementById('requestGameUrl').value = '';
-            document.getElementById('requestGameImg').value = '';
-            document.getElementById('requestGameOther').value = '';
-            document.getElementById('bugIssueType').value = '';
-            document.getElementById('bugDescription').value = '';
+            ['requestGameName','requestGameUrl','requestGameImg','requestGameOther','bugIssueType','bugDescription'].forEach(id=>document.getElementById(id).value='');
             validateRequestOrBug();
-            setTimeout(() => document.getElementById('requestGameName').focus(), 100);
+            setTimeout(()=>document.getElementById('requestGameName').focus(),100);
         };
 
         function validateRequestOrBug() {
-            if (activeRequestTab === 'request-game-tab') {
-                const name = document.getElementById('requestGameName').value.trim();
-                document.getElementById('sendRequestOrBug').disabled = !name;
-            } else {
-                const issueType = document.getElementById('bugIssueType').value.trim();
-                const description = document.getElementById('bugDescription').value.trim();
-                document.getElementById('sendRequestOrBug').disabled = !(issueType && description);
-            }
+            if(activeRequestTab==='request-game-tab') document.getElementById('sendRequestOrBug').disabled=!document.getElementById('requestGameName').value.trim();
+            else document.getElementById('sendRequestOrBug').disabled=!(document.getElementById('bugIssueType').value.trim()&&document.getElementById('bugDescription').value.trim());
         }
 
-        document.getElementById('requestGameName').addEventListener('input', validateRequestOrBug);
-        document.getElementById('bugIssueType').addEventListener('input', validateRequestOrBug);
-        document.getElementById('bugDescription').addEventListener('input', validateRequestOrBug);
+        ['requestGameName','bugIssueType','bugDescription'].forEach(id=>document.getElementById(id).addEventListener('input',validateRequestOrBug));
 
-        document.querySelectorAll('#request-modal .tab-modal').forEach(tab => {
-            tab.addEventListener('click', function() {
-                const targetTab = this.dataset.tab;
-                activeRequestTab = targetTab;
-                document.querySelectorAll('#request-modal .tab-modal').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('#request-modal .tab-content-modal').forEach(c => c.classList.remove('active'));
-                this.classList.add('active');
-                document.getElementById(targetTab).classList.add('active');
+        document.querySelectorAll('#request-modal .tab-modal').forEach(tab=>{
+            tab.addEventListener('click',function(){
+                activeRequestTab=this.dataset.tab;
+                document.querySelectorAll('#request-modal .tab-modal').forEach(t=>t.classList.remove('active'));
+                document.querySelectorAll('#request-modal .tab-content-modal').forEach(c=>c.classList.remove('active'));
+                this.classList.add('active'); document.getElementById(activeRequestTab).classList.add('active');
                 validateRequestOrBug();
-                if (targetTab === 'request-game-tab') {
-                    setTimeout(() => document.getElementById('requestGameName').focus(), 100);
-                } else {
-                    setTimeout(() => document.getElementById('bugIssueType').focus(), 100);
-                }
+                setTimeout(()=>document.getElementById(activeRequestTab==='request-game-tab'?'requestGameName':'bugIssueType').focus(),100);
             });
         });
 
         document.getElementById('sendRequestOrBug').onclick = function() {
-            if (activeRequestTab === 'request-game-tab') {
-                const name = document.getElementById('requestGameName').value.trim();
-                const url = document.getElementById('requestGameUrl').value.trim();
-                const img = document.getElementById('requestGameImg').value.trim();
-                const other = document.getElementById('requestGameOther').value.trim();
-                if (!name) return;
-                const requestsRef = ref(database, 'gameRequests');
-                const newRequestRef = push(requestsRef);
-                set(newRequestRef, { name, url: url || 'Not provided', img: img || 'Not provided', other: other || 'None', timestamp: Date.now(), requestId: newRequestRef.key })
-                .then(() => { closeModals(); document.getElementById('success-message').textContent = 'Game request sent without blowing up'; document.getElementById('success-modal').style.display = 'flex'; })
-                .catch(() => { closeModals(); document.getElementById('error-message').textContent = 'Failed to send request. Please try again.'; document.getElementById('error-modal').style.display = 'flex'; });
+            if(activeRequestTab==='request-game-tab') {
+                const name=document.getElementById('requestGameName').value.trim(); if(!name) return;
+                const newRef=push(ref(database,'gameRequests'));
+                set(newRef,{name,url:document.getElementById('requestGameUrl').value.trim()||'Not provided',img:document.getElementById('requestGameImg').value.trim()||'Not provided',other:document.getElementById('requestGameOther').value.trim()||'None',timestamp:Date.now(),requestId:newRef.key})
+                .then(()=>{closeModals();document.getElementById('success-message').textContent='Game request sent without blowing up';document.getElementById('success-modal').style.display='flex';})
+                .catch(()=>{closeModals();document.getElementById('error-message').textContent='Failed to send request. Please try again.';document.getElementById('error-modal').style.display='flex';});
             } else {
-                const issueType = document.getElementById('bugIssueType').value.trim();
-                const description = document.getElementById('bugDescription').value.trim();
-                if (!issueType || !description) return;
-                const bugsRef = ref(database, 'bugReports');
-                const newBugRef = push(bugsRef);
-                set(newBugRef, { issueType, description, timestamp: Date.now(), bugId: newBugRef.key })
-                .then(() => { closeModals(); document.getElementById('success-message').textContent = 'Bug report sent without blowing up'; document.getElementById('success-modal').style.display = 'flex'; })
-                .catch(() => { closeModals(); document.getElementById('error-message').textContent = 'Failed to send bug report. Please try again.'; document.getElementById('error-modal').style.display = 'flex'; });
+                const issueType=document.getElementById('bugIssueType').value.trim();
+                const description=document.getElementById('bugDescription').value.trim();
+                if(!issueType||!description) return;
+                const newRef=push(ref(database,'bugReports'));
+                set(newRef,{issueType,description,timestamp:Date.now(),bugId:newRef.key})
+                .then(()=>{closeModals();document.getElementById('success-message').textContent='Bug report sent without blowing up';document.getElementById('success-modal').style.display='flex';})
+                .catch(()=>{closeModals();document.getElementById('error-message').textContent='Failed to send bug report. Please try again.';document.getElementById('error-modal').style.display='flex';});
             }
         };
 
-        // Admin
         window.openAdminPasswordModal = function() {
-            document.getElementById('admin-password-modal').style.display = 'flex';
-            document.getElementById('adminPassword').value = '';
-            document.getElementById('passwordError').style.display = 'none';
-            setTimeout(() => document.getElementById('adminPassword').focus(), 100);
+            document.getElementById('admin-password-modal').style.display='flex';
+            document.getElementById('adminPassword').value='';
+            document.getElementById('passwordError').style.display='none';
+            setTimeout(()=>document.getElementById('adminPassword').focus(),100);
         };
 
         window.checkAdminPassword = function() {
-            const password = document.getElementById('adminPassword').value;
-            if (password === 'TankaJahari42') {
-                document.getElementById('admin-password-modal').style.display = 'none';
+            if(document.getElementById('adminPassword').value==='TankaJahari42') {
+                document.getElementById('admin-password-modal').style.display='none';
                 openAdminDashboard();
             } else {
-                document.getElementById('passwordError').style.display = 'block';
-                document.getElementById('adminPassword').value = '';
+                document.getElementById('passwordError').style.display='block';
+                document.getElementById('adminPassword').value='';
             }
         };
 
-        document.getElementById('adminPassword').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') window.checkAdminPassword();
-        });
+        document.getElementById('adminPassword').addEventListener('keypress',e=>{if(e.key==='Enter') window.checkAdminPassword();});
 
         function openAdminDashboard() {
-            document.getElementById('admin-modal').style.display = 'flex';
-            document.querySelectorAll('#admin-modal .tab-modal').forEach(tab => {
-                tab.onclick = function() {
-                    document.querySelectorAll('#admin-modal .tab-modal').forEach(t => t.classList.remove('active'));
-                    document.querySelectorAll('#admin-modal .tab-content-modal').forEach(c => c.classList.remove('active'));
-                    this.classList.add('active');
-                    document.getElementById(this.dataset.tab).classList.add('active');
+            document.getElementById('admin-modal').style.display='flex';
+            document.querySelectorAll('#admin-modal .tab-modal').forEach(tab=>{
+                tab.onclick=function(){
+                    document.querySelectorAll('#admin-modal .tab-modal').forEach(t=>t.classList.remove('active'));
+                    document.querySelectorAll('#admin-modal .tab-content-modal').forEach(c=>c.classList.remove('active'));
+                    this.classList.add('active'); document.getElementById(this.dataset.tab).classList.add('active');
                 };
             });
-
-            const requestsRef = ref(database, 'gameRequests');
-            onValue(requestsRef, (snapshot) => {
-                const requests = snapshot.val();
-                const requestsList = document.getElementById('requestsList');
-                if (!requests) { requestsList.innerHTML = '<div class="no-requests">No game requests yet</div>'; return; }
-                const requestsArray = Object.entries(requests).map(([key, value]) => ({ id: key, ...value })).sort((a, b) => b.timestamp - a.timestamp);
-                requestsList.innerHTML = requestsArray.map(req => `
+            onValue(ref(database,'gameRequests'),snapshot=>{
+                const requests=snapshot.val();
+                const el=document.getElementById('requestsList');
+                if(!requests){el.innerHTML='<div class="no-requests">No game requests yet</div>';return;}
+                el.innerHTML=Object.entries(requests).map(([k,v])=>({id:k,...v})).sort((a,b)=>b.timestamp-a.timestamp).map(r=>`
                     <div class="request-item">
-                        <div class="request-item-header">
-                            <div class="request-game-name">${req.name}</div>
-                            <button class="request-delete-btn" onclick="deleteRequest('${req.id}')">Delete</button>
-                        </div>
-                        <div class="request-field"><span class="request-field-label">URL:</span><span class="request-field-value">${req.url}</span></div>
-                        <div class="request-field"><span class="request-field-label">Image URL:</span><span class="request-field-value">${req.img}</span></div>
-                        <div class="request-field"><span class="request-field-label">Other:</span><span class="request-field-value">${req.other}</span></div>
-                        <div class="request-field"><span class="request-field-label">Submitted:</span><span class="request-field-value">${new Date(req.timestamp).toLocaleString()}</span></div>
-                    </div>
-                `).join('');
+                        <div class="request-item-header"><div class="request-game-name">${r.name}</div><button class="request-delete-btn" onclick="deleteRequest('${r.id}')">Delete</button></div>
+                        <div class="request-field"><span class="request-field-label">URL:</span><span class="request-field-value">${r.url}</span></div>
+                        <div class="request-field"><span class="request-field-label">Image URL:</span><span class="request-field-value">${r.img}</span></div>
+                        <div class="request-field"><span class="request-field-label">Other:</span><span class="request-field-value">${r.other}</span></div>
+                        <div class="request-field"><span class="request-field-label">Submitted:</span><span class="request-field-value">${new Date(r.timestamp).toLocaleString()}</span></div>
+                    </div>`).join('');
             });
-
-            const bugsRef = ref(database, 'bugReports');
-            onValue(bugsRef, (snapshot) => {
-                const bugs = snapshot.val();
-                const bugReportsList = document.getElementById('bugReportsList');
-                if (!bugs) { bugReportsList.innerHTML = '<div class="no-requests">No bug reports yet</div>'; return; }
-                const bugsArray = Object.entries(bugs).map(([key, value]) => ({ id: key, ...value })).sort((a, b) => b.timestamp - a.timestamp);
-                bugReportsList.innerHTML = bugsArray.map(bug => `
+            onValue(ref(database,'bugReports'),snapshot=>{
+                const bugs=snapshot.val();
+                const el=document.getElementById('bugReportsList');
+                if(!bugs){el.innerHTML='<div class="no-requests">No bug reports yet</div>';return;}
+                el.innerHTML=Object.entries(bugs).map(([k,v])=>({id:k,...v})).sort((a,b)=>b.timestamp-a.timestamp).map(b=>`
                     <div class="request-item">
-                        <div class="request-item-header">
-                            <div class="request-game-name">${bug.issueType}</div>
-                            <button class="request-delete-btn" onclick="deleteBugReport('${bug.id}')">Delete</button>
-                        </div>
-                        <div class="request-field"><span class="request-field-label">Description:</span><span class="request-field-value">${bug.description}</span></div>
-                        <div class="request-field"><span class="request-field-label">Submitted:</span><span class="request-field-value">${new Date(bug.timestamp).toLocaleString()}</span></div>
-                    </div>
-                `).join('');
+                        <div class="request-item-header"><div class="request-game-name">${b.issueType}</div><button class="request-delete-btn" onclick="deleteBugReport('${b.id}')">Delete</button></div>
+                        <div class="request-field"><span class="request-field-label">Description:</span><span class="request-field-value">${b.description}</span></div>
+                        <div class="request-field"><span class="request-field-label">Submitted:</span><span class="request-field-value">${new Date(b.timestamp).toLocaleString()}</span></div>
+                    </div>`).join('');
             });
         }
 
-        let pendingDeleteId = null;
-        let pendingDeleteType = null;
+        let pendingDeleteId=null, pendingDeleteType=null;
+        window.deleteRequest=id=>{pendingDeleteId=id;pendingDeleteType='request';document.getElementById('delete-confirm-modal').style.display='flex';};
+        window.deleteBugReport=id=>{pendingDeleteId=id;pendingDeleteType='bug';document.getElementById('delete-confirm-modal').style.display='flex';};
 
-        window.deleteRequest = function(requestId) { pendingDeleteId = requestId; pendingDeleteType = 'request'; document.getElementById('delete-confirm-modal').style.display = 'flex'; };
-        window.deleteBugReport = function(bugId) { pendingDeleteId = bugId; pendingDeleteType = 'bug'; document.getElementById('delete-confirm-modal').style.display = 'flex'; };
-
-        document.getElementById('executeDeleteItem').onclick = function() {
-            if (pendingDeleteType === 'request') {
-                remove(ref(database, 'gameRequests/' + pendingDeleteId)).catch(() => { window.closeDeleteConfirm(); document.getElementById('error-message').textContent = 'Failed to delete request.'; document.getElementById('error-modal').style.display = 'flex'; });
-            } else if (pendingDeleteType === 'bug') {
-                remove(ref(database, 'bugReports/' + pendingDeleteId)).catch(() => { window.closeDeleteConfirm(); document.getElementById('error-message').textContent = 'Failed to delete bug report.'; document.getElementById('error-modal').style.display = 'flex'; });
-            }
-            window.closeDeleteConfirm();
-            pendingDeleteId = null; pendingDeleteType = null;
+        document.getElementById('executeDeleteItem').onclick=function(){
+            const dbRef=pendingDeleteType==='request'?ref(database,'gameRequests/'+pendingDeleteId):ref(database,'bugReports/'+pendingDeleteId);
+            remove(dbRef).catch(()=>{window.closeDeleteConfirm();document.getElementById('error-message').textContent='Failed to delete.';document.getElementById('error-modal').style.display='flex';});
+            window.closeDeleteConfirm(); pendingDeleteId=null; pendingDeleteType=null;
         };
 
-        document.getElementById('search-input').addEventListener('input', (e) => { searchGames(e.target.value); });
-        document.addEventListener('click', (e) => {
-            if (searchActive && !e.target.closest('#search-container') && !e.target.closest('#search-trigger')) { window.toggleSearch(); }
-        });
+        document.getElementById('search-input').addEventListener('input',e=>searchGames(e.target.value));
+        document.addEventListener('click',e=>{if(searchActive&&!e.target.closest('#search-container')&&!e.target.closest('#search-trigger')) window.toggleSearch();});
+        window.addEventListener('keydown',e=>{if(e.key==='Escape') window.closeModals();});
 
         apply(pCol, sCol);
         loadUserData();
         renderGames();
-
-        setTimeout(() => { document.getElementById('version-modal').classList.add('show'); }, 100);
-
-        window.addEventListener('keydown', (e) => { if (e.key === 'Escape') window.closeModals(); });
+        setTimeout(()=>document.getElementById('version-modal').classList.add('show'), 100);
     </script>
 </body>
 </html>
