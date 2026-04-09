@@ -186,13 +186,13 @@
 
     <div id="version-modal">
         <div class="box-large" style="width: 450px; text-align: left;">
-            <div class="modal-header">v4</div>
+            <div class="modal-header">v4.1</div>
             <div class="modal-body" style="height: auto; padding: 30px;">
                 <p style="margin-bottom: 20px; line-height: 1.5; color: #ccc;">
                     <span style="font-size: 16px; font-weight: bold;">Added:</span><br>
-                    <span style="display: block; padding-left: 20px;"><br> - Added some spectacular new games<br> - Game sections<br></span>
+                    <span style="display: block; padding-left: 20px;"><br> - Added even more spectacular new games<br> - Game sections<br></span>
                     <span style="font-size: 16px; font-weight: bold;">Fixed:</span><br>
-                    <span style="display: block; padding-left: 20px;"><br> - Removed Epstein (truly removed for good)</span>
+                    <span style="display: block; padding-left: 20px;"><br> - Removed Epstein (truly removed for good i swear) <br> - Changed links to old games</span>
                 </p>
             </div>
             <div class="btn-row"><button class="action-btn save-btn" onclick="closeVersionModal()">OK</button></div>
@@ -385,7 +385,15 @@
             { name: "DOOM", url: "https://azazeln28.neocities.org/games/doom", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGE2mq9iAu71AcRVIHpRZ01jA1Sme0sOwDOw&s" },
             { name: "Minecraft", url: "https://eaglercraft.q13x.com/1.12.2/wasm/", img: "https://live.staticflickr.com/7367/10134745566_a7c6dab5bb_z.jpg" },
             { name: "Luigi's Brother 64", url: "https://notan127.github.io/SM64-PC-Port-WebGL/classic/", img: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/1d88deca-0eec-4d00-bdcf-8566768cc03b/d6azgkg-b0d52076-20a0-4e77-8d4a-689ce849693c.png" },
-            { name: "Bitburner", url: "https://bitburner-official.github.io/", img: "https://cdn2.steamgriddb.com/grid/50307d8d84d7930c6e2200647ab1ea76.png" }
+            { name: "Bitburner", url: "https://bitburner-official.github.io/", img: "https://cdn2.steamgriddb.com/grid/50307d8d84d7930c6e2200647ab1ea76.png" },
+            { name: "Omori", url: "https://truffled.lol/gamefile/OMORI.html", img: "https://truffled.lol/png/games/omori.webp" },
+            { name: "OneShot", url: "https://truffled.lol/gamefile/oneshot.html", img: "https://truffled.lol/png/games/oneshot.webp" },
+            { name: "Stardew Valley", url: "https://truffled.lol/games/stardew/index.html", img: "https://truffled.lol/png/games/stardew.webp" },
+            { name: "Sonic", url: "https://truffled.lol/games/sonic/index.html", img: "https://truffled.lol/png/games/sonic1.web" },
+            { name: "Sonic 2", url: "https://truffled.lol/games/sonic2/index.html", img: "https://truffled.lol/png/games/sonic2.webp" },
+            { name: "Sonic 3", url: "https://truffled.lol/games/sonic3/index.html", img: "https://truffled.lol/png/games/sonic3.webp" },
+            { name: "Sonic 4", url: "https://truffled.lol/games/sonic4/index.html", img: "https://truffled.lol/png/games/sonic4.webp" },
+            { name: "People Playground", url: "https://truffled.lol/games/PPG/index.html", img: "https://truffled.lol/png/games/peoplepg.webp" },
         ];
 
         const browserGames = [
@@ -403,7 +411,7 @@
             { name: "explosion", url: "https://radmanplays.github.io/Eaglercraft-1.21/", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3aNw2EsQet_646ZULvppGfnVEMqcEyTo_fA&s" },
             { name: "Moto X3M", url: "https://motox3munblocked.github.io/", img: "https://imgs.crazygames.com/moto-x3m_1x1/20231122033955/moto-x3m_1x1-cover?format=auto&quality=100&metadata=none&width=1200" },
             { name: "Moto X3M 2", url: "https://html-online-game.github.io/moto-x3m-2/", img: "https://motox3mwinter.com/wp-content/uploads/2025/11/Moto-X3M-2.webp" },
-            { name: "Stickman Hook", url: "https://stickmanhook.github.io/", img: "https://play-lh.googleusercontent.com/yXqBI1Vb1b-xjwmXLE2T7FQbgHIxfvjze1b6jO2aLHfy8Y8ta7NFSEVqZoPHtM2Ajyrl" },
+            { name: "Stickman Hook", url: "https://truffled.lol/games/stickman-hook/index.html", img: "https://play-lh.googleusercontent.com/yXqBI1Vb1b-xjwmXLE2T7FQbgHIxfvjze1b6jO2aLHfy8Y8ta7NFSEVqZoPHtM2Ajyrl" },
             { name: "2048", url: "https://www.2048.org/", img: "https://upload.wikimedia.org/wikipedia/commons/1/18/2048_logo.svg" },
             { name: "HexGL", url: "https://hexgl.bkcore.com/play/", img: "https://img.itch.zone/aW1nLzM2NjM2NzcuanBn/original/U1%2FbAe.jpg" },
             { name: "Defly.io", url: "https://defly.io/", img: "https://i.ytimg.com/vi/IfkgLxYaQko/hqdefault.jpg" },
@@ -421,7 +429,9 @@
             { name: "Bonk.io", url: "https://bonk.io/", img: "https://b.thumbs.redditmedia.com/9p8-wn2_KPdgjPTaR9fx-NIVgFhvsgBL0WPdbv5GMkA.png" },
             { name: "Diep.io", url: "https://diep.io/", img: "https://d.player.one/en/full/145601/diepio-has-seen-ton-updates-this-month-including-new-auto-trapper-streamliner-spread-shot.jpg?w=1600&h=1200&q=88&f=29ed7b98f2ee3a7feaf40afd10f76d74" },
             { name: "Curve Fever", url: "https://curvefever.pro/", img: "https://gameforge.com/de-DE/littlegames/includes/images/games/6388_5eb3e86cd81b4.jpg" },
-            { name: "Bloons TD 4", url: "https://mountain658.github.io/g/btd4/index.html", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVeVofXSpRODBfgxgrGwNAT1h_xsqr4SiQd_D8ac7Pk1C7e-bh6CP40CTUhBxQOB_LCF-UGg&s=10" }
+            { name: "Bloons TD 4", url: "https://mountain658.github.io/g/btd4/index.html", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVeVofXSpRODBfgxgrGwNAT1h_xsqr4SiQd_D8ac7Pk1C7e-bh6CP40CTUhBxQOB_LCF-UGg&s=10" },
+            { name: "OVO", url: "https://truffled.lol/games/ovo/index.html", img: "https://truffled.lol/png/games/ovo.webp" },
+            { name: "OVO 2", url: "https://truffled.lol/games/OvO2/index.html", img: "https://truffled.lol/png/games/ovo2.webp" },
         ];
 
         const colorPalette = ["#FF0000","#FF4500","#FFA500","#FFFF00","#ADFF2F","#00FF00","#00FF7F","#00FFFF","#00BFFF","#0000FF","#4B0082","#9300EE","#FF00FF","#FF69B4","#FFC0CB","#FFFFFF","#8B4513","#666666","#2F4F4F","#1A1A1A","#050505"];
