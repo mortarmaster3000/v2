@@ -1,0 +1,30 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#chat {
+  width: 500px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+#globalMessages, #dmMessages {
+  height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.message {
+  margin-bottom: 8px;
+  padding: 6px;
+  background: #f7f7f7;
+  border-radius: 6px;
+}

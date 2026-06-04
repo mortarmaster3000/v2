@@ -12,7 +12,7 @@
         #tab-bar::-webkit-scrollbar-track { background: #111; }
         #tab-bar::-webkit-scrollbar-thumb { background: var(--s); border-radius: 2px; }
         
-        .tab-item { background: #111; border: 1px solid #333; border-bottom: none; padding: 8px 12px; margin: 0 2px; cursor: pointer; display: flex; align-items: center; gap: 8px; min-width: 150px; max-width: 200px; border-radius: 8px 8px 0 0; transition: 0.2s; position: relative; white-space: nowrap; animation: slideIn 0.2s ease-out; }
+        .tab-item { background: #111; border: 1px solid #333; border-bottom: none; padding: 8px 12px; margin: 0 2px; cursor: pointer; display: flex; align-items: center; gap: 8px; min-width: 150px; max-width: 200px; border-radius: 8px 8px 0 0; transition: 0.2s; position: relative; white-space: nowrap; }
         @keyframes slideIn { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .tab-item:hover { background: #1a1a1a; }
         .tab-item.active { background: var(--p); border-color: var(--s); border-bottom: 2px solid var(--p); margin-bottom: -2px; }
@@ -22,6 +22,16 @@
         .tab-close:hover { background: #ff4444; }
         .tab-close svg { width: 10px; height: 10px; fill: #fff; }
         .tab-item.home { min-width: 80px; }
+        .tab-item.opening { animation: tabOpen 0.28s ease-out; }
+        .tab-item.closing { animation: tabClose 0.22s ease-in forwards; }
+        .tab-content.opening { animation: tabOpen 0.28s ease-out; }
+        .tab-content.closing { animation: tabClose 0.22s ease-in forwards; }
+        .tab-item.dragging { opacity: 0.6; transform: translateY(-6px) scale(1.03); box-shadow: 0 12px 34px rgba(147,0,238,0.26); }
+        .tab-item.drag-over { outline: 2px dashed rgba(147,0,238,0.5); transform: translateY(-3px); }
+
+        @keyframes tabOpen { from { transform: translateY(12px) scale(0.98); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+        @keyframes tabClose { to { transform: translateY(12px) scale(0.98); opacity: 0; } }
+        .tab-item.placeholder { background: transparent; border: none; min-width:120px; width: 0; transition: width 160ms ease; }
         
         #content-area { height: calc(100vh - 40px); position: relative; overflow: hidden; }
         .tab-content { display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
@@ -89,8 +99,8 @@
         .reset-btn-final { background:transparent; color:#ff4444; border: 1px solid #ff4444; }
         .confirm-del-btn { background: #ff4444; color: #fff; }
         
-        .info-btn, .request-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--s); background: transparent; color: var(--s); font-style: italic; font-family: serif; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; margin-top: 5px; }
-        .info-btn:hover, .request-btn:hover { background: var(--s); color: white; box-shadow: 0 0 10px var(--s); }
+        .info-btn, .request-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--s); background: var(--s); color: #000; font-style: italic; font-family: serif; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.18s ease; margin-top: 5px; box-shadow: 0 0 14px rgba(147,0,238,0.22), 0 0 28px rgba(147,0,238,0.08); }
+        .info-btn:hover, .request-btn:hover { background: var(--s); color: #000; box-shadow: 0 8px 26px rgba(147,0,238,0.44), 0 0 46px rgba(147,0,238,0.26); transform: translateY(-2px); }
         .request-btn { font-style: normal; font-family: sans-serif; font-weight: bold; font-size: 18px; }
         
         .success-modal, .error-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10001; align-items: center; justify-content: center; }
@@ -108,6 +118,16 @@
         #search-input::placeholder { color: #666; }
         .tab-content-modal { display:none; }
         .tab-content-modal.active { display:block; }
+        
+        #chat-bubble { position: fixed; bottom: 20px; right: 20px; z-index: 9998; width: 56px; height: 56px; border-radius: 50%; background: var(--s); border: 2px solid var(--s); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; box-shadow: 0 4px 12px rgba(147,0,238,0.3); }
+        #chat-bubble:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(147,0,238,0.5); }
+        #chat-bubble svg { width: 28px; height: 28px; fill: #fff; }
+        #chat-modal { display: none; position: fixed; bottom: 90px; right: 20px; width: 400px; height: 500px; background: #111; border: 2px solid var(--s); border-radius: 12px; z-index: 9999; flex-direction: column; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+        #chat-modal.active { display: flex; }
+        #chat-modal-header { padding: 15px; background: var(--s); color: #000; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        #chat-modal-close { width: 24px; height: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); border-radius: 4px; }
+        #chat-modal-close svg { width: 16px; height: 16px; fill: #000; }
+        #chat-modal-frame { flex: 1; border: none; }
         .secret-apostrophe { cursor: default; }
         
         .request-item { background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin-bottom: 15px; }
@@ -161,6 +181,7 @@
             </div>
             <div class="modal-body" style="height: auto; padding: 25px 30px;">
                 <div id="request-game-tab" class="tab-content-modal active">
+                    <div style="font-size:16px; color:var(--s); font-weight:700; margin-bottom:12px; text-transform:uppercase;">Request Game</div>
                     <label>Game Name <span class="required-star">*</span></label>
                     <input type="text" id="requestGameName" placeholder="Tanka Jahari Simulator" style="margin-bottom: 20px;">
                     <label>URL <span style="color: #666; font-size: 10px; margin-left: 5px;">(OPTIONAL)</span></label>
@@ -171,6 +192,7 @@
                     <textarea id="requestGameOther" placeholder="Anything else you wanna say" style="min-height: 60px; margin-bottom: 0;"></textarea>
                 </div>
                 <div id="report-bug-tab" class="tab-content-modal">
+                    <div style="font-size:16px; color:var(--s); font-weight:700; margin-bottom:12px; text-transform:uppercase;">Report Bug</div>
                     <label>Bug <span class="required-star">*</span></label>
                     <input type="text" id="bugIssueType" placeholder="Example: the website exploded" style="margin-bottom: 20px;">
                     <label>Description <span class="required-star">*</span></label>
@@ -274,16 +296,14 @@
                 <label>Game Name <span class="required-star" id="nameStar">*</span></label>
                 <input type="text" id="newGameName" placeholder="Tanka Jahari Simulator" oninput="validateForm()">
                 <label>Game URL <span class="required-star" id="urlStar">*</span></label>
-                <input type="text" id="newGameUrl" placeholder="Tanka-Jahari_Simulator.com" oninput="validateForm()">
+                <input type="text" id="newGameUrl" placeholder="TankaJahariSimulator.com" oninput="validateForm()">
                 <label>Icon Image URL</label>
-                <input type="text" id="newGameImg" style="margin-bottom: 15px;" placeholder="Tanka-Jahari-Simulator/logo.png">
-                <div style="display: flex; gap: 10px;">
-                    <button class="info-btn" onclick="openNoticeManual()">i</button>
-                    <button class="request-btn" onclick="document.getElementById('add-modal').style.display='none'; openRequestModal();">+</button>
-                </div>
+                <input type="text" id="newGameImg" style="margin-bottom: 15px;" placeholder="TankaJahariSimulator/logo.png">
+                <!-- moved '+' button into footer between Cancel and Save Game -->
             </div>
             <div class="btn-row">
                 <button class="action-btn cancel-btn" onclick="closeModals()">Cancel</button>
+                <button class="request-btn" id="addModalRequestButton" style="width:40px; height:40px; padding:0; margin:0 8px; font-size:20px; display:flex; align-items:center; justify-content:center;" onclick="openRequestFromAdd();">+</button>
                 <button class="action-btn save-btn" id="confirmAddGame" disabled>Save Game</button>
             </div>
         </div>
@@ -314,6 +334,9 @@
             <div class="tab-icon" style="background: var(--s);">🏠</div>
             <div class="tab-title">Home</div>
         </div>
+        <div class="tab-item" data-tab="messages" onclick="switchTab('messages')" style="min-width: auto; max-width: none; padding: 8px 12px; margin-left: auto;">
+            <div class="tab-icon" style="background: #ff3333; margin: 0;">💬</div>
+        </div>
     </div>
 
     <div id="content-area">
@@ -321,7 +344,10 @@
             <div class="home-ui-element info" onclick="document.getElementById('info-modal').style.display='flex'">
                 <button class="info-btn">i</button>
             </div>
-            <div class="home-ui-element request" onclick="openRequestModal()">
+            <div class="home-ui-element bug" style="bottom: 110px; left: 20px;" onclick="openRequestModal('bug')">
+                <button class="info-btn" title="Report Bug"><img src="bugIcon.png" alt="bug" style="width:18px;height:18px;object-fit:contain;display:block;" /></button>
+            </div>
+            <div class="home-ui-element request" onclick="openRequestModal('request')">
                 <button class="request-btn">+</button>
             </div>
             <div class="home-ui-element version" onclick="openVersionModal()">v4</div>
@@ -345,6 +371,10 @@
                 <div class="grid" id="browserGrid"></div>
             </div>
         </div>
+        
+        <div id="messages" class="tab-content">
+            <iframe src="messagingIndex.html" style="width: 100%; height: 100%; border: none;"></iframe>
+        </div>
     </div>
 
     <script type="module">
@@ -364,12 +394,47 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        const userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        const userRef = ref(database, 'users/' + userId);
-        set(userRef, { joinedAt: Date.now(), lastSeen: Date.now() });
-        get(ref(database, 'stats/totalVisits')).then(s => set(ref(database, 'stats/totalVisits'), (s.val() || 0) + 1));
-        onDisconnect(userRef).remove();
-        setInterval(() => update(userRef, { lastSeen: Date.now() }), 30000);
+        const LOCAL_DB_KEY = 'tankajahariv3_local_db_v1';
+        function loadLocalDB() {
+            try {
+                return JSON.parse(localStorage.getItem(LOCAL_DB_KEY)) || { gameRequests: {}, bugReports: {} };
+            } catch (e) {
+                return { gameRequests: {}, bugReports: {} };
+            }
+        }
+        function saveLocalDB(db) {
+            localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(db));
+        }
+        function createLocalId(prefix) {
+            return `${prefix}_${Math.random().toString(36).slice(2, 10)}_${Date.now()}`;
+        }
+        function addLocalGameRequest(data) {
+            const db = loadLocalDB();
+            const id = createLocalId('req');
+            db.gameRequests[id] = { ...data, requestId: id, timestamp: Date.now() };
+            saveLocalDB(db);
+            return Promise.resolve({ id, ...db.gameRequests[id] });
+        }
+        function addLocalBugReport(data) {
+            const db = loadLocalDB();
+            const id = createLocalId('bug');
+            db.bugReports[id] = { ...data, bugId: id, timestamp: Date.now() };
+            saveLocalDB(db);
+            return Promise.resolve({ id, ...db.bugReports[id] });
+        }
+        function getLocalGameRequests() {
+            return Object.entries(loadLocalDB().gameRequests).map(([id, value]) => ({ id, ...value }));
+        }
+        function getLocalBugReports() {
+            return Object.entries(loadLocalDB().bugReports).map(([id, value]) => ({ id, ...value }));
+        }
+        function deleteLocalDBItem(type, id) {
+            const db = loadLocalDB();
+            if (type === 'request') delete db.gameRequests[id];
+            else delete db.bugReports[id];
+            saveLocalDB(db);
+            return Promise.resolve();
+        }
 
         const fullGames = [
             { name: "Hollow Knight", url: "https://mhikarup.github.io/hollowknightunblocked/", img: "https://composerlarkin.com/wp-content/uploads/2017/02/soundtrack_cover.jpg" },
@@ -589,8 +654,130 @@
             content.id = tabId; content.className = 'tab-content';
             content.innerHTML = `<iframe src="${url}"></iframe>`;
             document.getElementById('content-area').appendChild(content);
+            const iframe = content.querySelector('iframe');
             openTabs[tabId] = { name, url, img, element: tabItem, content };
-            switchTab(tabId);
+                // Custom drag-to-reorder (exclude home)
+                tabItem.addEventListener('mousedown', function(e) {
+                    if (e.button !== 0 || tabItem.classList.contains('home')) return;
+                    if (e.target.closest('.tab-close')) return; // clicking close shouldn't start drag
+
+                    const tabBar = document.getElementById('tab-bar');
+                    let dragStarted = false;
+                    const startX = e.clientX;
+
+                    function getTabs() {
+                        return Array.from(tabBar.querySelectorAll('.tab-item:not(.home)'));
+                    }
+
+                    function getTabCenters() {
+                        return getTabs().map(t => {
+                            const r = t.getBoundingClientRect();
+                            return { tab: t, center: r.left + r.width / 2, left: r.left, width: r.width };
+                        });
+                    }
+
+                    // Snapshot original order and positions
+                    const originalOrder = getTabs();
+                    let currentOrder = [...originalOrder];
+                    const dragIndex = originalOrder.indexOf(tabItem);
+
+                    const dragRect = tabItem.getBoundingClientRect();
+                    const offsetX = startX - dragRect.left;
+
+                    // We defer applying drag styles until the pointer moves enough
+
+                    function applyDragStartStyles(){
+                        // Freeze all tab widths so they don't collapse
+                        getTabs().forEach(t => { t.style.width = t.getBoundingClientRect().width + 'px'; });
+                        tabItem.style.position = 'relative';
+                        tabItem.style.zIndex = '1000';
+                        tabItem.style.transition = 'none';
+                        tabItem.style.opacity = '0.85';
+                        tabItem.style.boxShadow = '0 8px 24px rgba(147,0,238,0.4)';
+                        tabItem.style.transform = 'translateY(-4px) scale(1.03)';
+                        getTabs().forEach(t => {
+                            if (t !== tabItem) {
+                                t.style.transition = 'transform 0.18s ease';
+                                t.style.transform = 'translateY(0)';
+                            }
+                        });
+                    }
+
+                    function onMove(ev) {
+                        const dx = ev.clientX - startX;
+                        if (!dragStarted && Math.abs(dx) > 6) {
+                            dragStarted = true;
+                            applyDragStartStyles();
+                        }
+                        if (!dragStarted) return;
+
+                        // Move dragged tab
+                        tabItem.style.transform = `translateX(${dx}px) translateY(-4px) scale(1.03)`;
+
+                        // Figure out where in the order it should be
+                        const dragCenter = ev.clientX - offsetX + dragRect.width / 2;
+                        const centers = getTabCenters().filter(x => x.tab !== tabItem);
+
+                        let newIndex = centers.length; // default: end
+                        for (let i = 0; i < centers.length; i++) {
+                            if (dragCenter < centers[i].center) { newIndex = i; break; }
+                        }
+
+                        // Rebuild currentOrder with dragged tab at newIndex
+                        const withoutDrag = currentOrder.filter(t => t !== tabItem);
+                        withoutDrag.splice(newIndex, 0, tabItem);
+
+                        // Shift other tabs visually
+                        const gap = dragRect.width + 4;
+                        centers.forEach(({ tab: t }) => {
+                            const origI = originalOrder.indexOf(t);
+                            let shift = 0;
+                            if (newIndex > dragIndex && origI > dragIndex && origI <= newIndex) shift = -gap;
+                            if (newIndex < dragIndex && origI < dragIndex && origI >= newIndex) shift = gap;
+                            t.style.transform = `translateX(${shift}px)`;
+                        });
+
+                        currentOrder = withoutDrag;
+                    }
+
+                    function onUp() {
+                        document.removeEventListener('mousemove', onMove);
+                        document.removeEventListener('mouseup', onUp);
+
+                        // Reset styles
+                        tabItem.style.transition = 'transform 0.15s ease, box-shadow 0.15s ease';
+                        tabItem.style.transform = '';
+                        tabItem.style.zIndex = '';
+                        tabItem.style.opacity = '';
+                        tabItem.style.boxShadow = '';
+                        tabItem.style.position = '';
+
+                        getTabs().forEach(t => {
+                            t.style.transition = '';
+                            t.style.transform = '';
+                            t.style.width = '';
+                        });
+
+                        if (dragStarted) {
+                            // Commit the new DOM order
+                            currentOrder.forEach(t => tabBar.appendChild(t));
+                            // Reorder content areas to match
+                            const contentArea = document.getElementById('content-area');
+                            currentOrder.map(t => t.dataset.tab).filter(Boolean).forEach(id => {
+                                const c = document.getElementById(id);
+                                if (c) contentArea.appendChild(c);
+                            });
+                        }
+                    }
+
+                    document.addEventListener('mousemove', onMove);
+                    document.addEventListener('mouseup', onUp);
+                });
+
+                // reveal immediately after creation
+                tabItem.style.opacity = '';
+                content.style.opacity = '';
+                switchTab(tabId);
         }
 
         window.switchTab = function(tabId) {
@@ -607,9 +794,14 @@
             const tab = openTabs[tabId];
             if (tab) {
                 const wasActive = tab.content.classList.contains('active');
-                tab.element.remove(); tab.content.remove();
-                delete openTabs[tabId];
-                if (wasActive) window.switchTab('home');
+                // play closing animation then remove
+                tab.element.classList.add('closing');
+                tab.content.classList.add('closing');
+                setTimeout(()=>{
+                    try { tab.element.remove(); tab.content.remove(); } catch(e){}
+                    delete openTabs[tabId];
+                    if (wasActive) window.switchTab('home');
+                }, 260);
             }
         }
 
@@ -707,16 +899,46 @@
         // Request modal
         let activeRequestTab = 'request-game-tab';
 
-        window.openRequestModal = function() {
-            document.getElementById('request-modal').style.display='flex';
-            activeRequestTab='request-game-tab';
+        window.openRequestModal = function(onlyTab) {
+            const modal = document.getElementById('request-modal');
+            modal.style.display='flex';
+            const tabBar = modal.querySelector('.tab-bar-modal');
+            if (onlyTab === 'request') { tabBar.style.display='none'; activeRequestTab='request-game-tab'; }
+            else if (onlyTab === 'bug') { tabBar.style.display='none'; activeRequestTab='report-bug-tab'; }
+            else { tabBar.style.display='flex'; activeRequestTab='request-game-tab'; }
             document.querySelectorAll('#request-modal .tab-modal').forEach(t=>t.classList.remove('active'));
             document.querySelectorAll('#request-modal .tab-content-modal').forEach(c=>c.classList.remove('active'));
-            document.querySelector('#request-modal .tab-modal[data-tab="request-game-tab"]').classList.add('active');
-            document.getElementById('request-game-tab').classList.add('active');
+            if (activeRequestTab==='request-game-tab') {
+                document.querySelector('#request-modal .tab-modal[data-tab="request-game-tab"]')?.classList.add('active');
+                document.getElementById('request-game-tab').classList.add('active');
+            } else {
+                document.querySelector('#request-modal .tab-modal[data-tab="report-bug-tab"]')?.classList.add('active');
+                document.getElementById('report-bug-tab').classList.add('active');
+            }
             ['requestGameName','requestGameUrl','requestGameImg','requestGameOther','bugIssueType','bugDescription'].forEach(id=>document.getElementById(id).value='');
             validateRequestOrBug();
-            setTimeout(()=>document.getElementById('requestGameName').focus(),100);
+            setTimeout(()=>document.getElementById(activeRequestTab==='request-game-tab'?'requestGameName':'bugIssueType').focus(),100);
+        };
+
+        window.openRequestFromAdd = function() {
+            const name = document.getElementById('newGameName').value.trim();
+            const url = document.getElementById('newGameUrl').value.trim();
+            const img = document.getElementById('newGameImg').value.trim();
+            document.getElementById('add-modal').style.display='none';
+            openRequestModal('request');
+            if (name || url || img) {
+                // set the request form fields after openRequestModal clears them
+                setTimeout(()=>{
+                    const nameEl = document.getElementById('requestGameName');
+                    const urlEl = document.getElementById('requestGameUrl');
+                    const imgEl = document.getElementById('requestGameImg');
+                    if (nameEl && name) { nameEl.value = name; }
+                    if (urlEl && url) { urlEl.value = url; }
+                    if (imgEl && img) { imgEl.value = img; }
+                    validateRequestOrBug();
+                    if (nameEl) nameEl.focus();
+                }, 120);
+            }
         };
 
         function validateRequestOrBug() {
@@ -740,18 +962,19 @@
         document.getElementById('sendRequestOrBug').onclick = function() {
             if(activeRequestTab==='request-game-tab') {
                 const name=document.getElementById('requestGameName').value.trim(); if(!name) return;
-                const newRef=push(ref(database,'gameRequests'));
-                set(newRef,{name,url:document.getElementById('requestGameUrl').value.trim()||'Not provided',img:document.getElementById('requestGameImg').value.trim()||'Not provided',other:document.getElementById('requestGameOther').value.trim()||'None',timestamp:Date.now(),requestId:newRef.key})
-                .then(()=>{closeModals();document.getElementById('success-message').textContent='Game request sent without blowing up';document.getElementById('success-modal').style.display='flex';})
-                .catch(()=>{closeModals();document.getElementById('error-message').textContent='Failed to send request. Please try again.';document.getElementById('error-modal').style.display='flex';});
+                addLocalGameRequest({
+                    name,
+                    url:document.getElementById('requestGameUrl').value.trim()||'Not provided',
+                    img:document.getElementById('requestGameImg').value.trim()||'Not provided',
+                    other:document.getElementById('requestGameOther').value.trim()||'None'
+                }).then(()=>{closeModals();document.getElementById('success-message').textContent='Game request saved locally';document.getElementById('success-modal').style.display='flex';})
+                .catch(()=>{closeModals();document.getElementById('error-message').textContent='Failed to save request. Please try again.';document.getElementById('error-modal').style.display='flex';});
             } else {
                 const issueType=document.getElementById('bugIssueType').value.trim();
                 const description=document.getElementById('bugDescription').value.trim();
                 if(!issueType||!description) return;
-                const newRef=push(ref(database,'bugReports'));
-                set(newRef,{issueType,description,timestamp:Date.now(),bugId:newRef.key})
-                .then(()=>{closeModals();document.getElementById('success-message').textContent='Bug report sent without blowing up';document.getElementById('success-modal').style.display='flex';})
-                .catch(()=>{closeModals();document.getElementById('error-message').textContent='Failed to send bug report. Please try again.';document.getElementById('error-modal').style.display='flex';});
+                addLocalBugReport({ issueType, description }).then(()=>{closeModals();document.getElementById('success-message').textContent='Bug report saved locally';document.getElementById('success-modal').style.display='flex';})
+                .catch(()=>{closeModals();document.getElementById('error-message').textContent='Failed to save bug report. Please try again.';document.getElementById('error-modal').style.display='flex';});
             }
         };
 
@@ -761,6 +984,7 @@
             document.getElementById('passwordError').style.display='none';
             setTimeout(()=>document.getElementById('adminPassword').focus(),100);
         };
+
 
         window.checkAdminPassword = function() {
             if(document.getElementById('adminPassword').value==='TankaJahari42') {
@@ -783,11 +1007,12 @@
                     this.classList.add('active'); document.getElementById(this.dataset.tab).classList.add('active');
                 };
             });
-            onValue(ref(database,'gameRequests'),snapshot=>{
-                const requests=snapshot.val();
-                const el=document.getElementById('requestsList');
-                if(!requests){el.innerHTML='<div class="no-requests">No game requests yet</div>';return;}
-                el.innerHTML=Object.entries(requests).map(([k,v])=>({id:k,...v})).sort((a,b)=>b.timestamp-a.timestamp).map(r=>`
+            const requests = getLocalGameRequests();
+            const reqEl = document.getElementById('requestsList');
+            if (!requests.length) {
+                reqEl.innerHTML = '<div class="no-requests">No game requests yet</div>';
+            } else {
+                reqEl.innerHTML = requests.sort((a,b)=>b.timestamp-a.timestamp).map(r=>`
                     <div class="request-item">
                         <div class="request-item-header"><div class="request-game-name">${r.name}</div><button class="request-delete-btn" onclick="deleteRequest('${r.id}')">Delete</button></div>
                         <div class="request-field"><span class="request-field-label">URL:</span><span class="request-field-value">${r.url}</span></div>
@@ -795,18 +1020,19 @@
                         <div class="request-field"><span class="request-field-label">Other:</span><span class="request-field-value">${r.other}</span></div>
                         <div class="request-field"><span class="request-field-label">Submitted:</span><span class="request-field-value">${new Date(r.timestamp).toLocaleString()}</span></div>
                     </div>`).join('');
-            });
-            onValue(ref(database,'bugReports'),snapshot=>{
-                const bugs=snapshot.val();
-                const el=document.getElementById('bugReportsList');
-                if(!bugs){el.innerHTML='<div class="no-requests">No bug reports yet</div>';return;}
-                el.innerHTML=Object.entries(bugs).map(([k,v])=>({id:k,...v})).sort((a,b)=>b.timestamp-a.timestamp).map(b=>`
+            }
+            const bugs = getLocalBugReports();
+            const bugEl = document.getElementById('bugReportsList');
+            if (!bugs.length) {
+                bugEl.innerHTML = '<div class="no-requests">No bug reports yet</div>';
+            } else {
+                bugEl.innerHTML = bugs.sort((a,b)=>b.timestamp-a.timestamp).map(b=>`
                     <div class="request-item">
                         <div class="request-item-header"><div class="request-game-name">${b.issueType}</div><button class="request-delete-btn" onclick="deleteBugReport('${b.id}')">Delete</button></div>
                         <div class="request-field"><span class="request-field-label">Description:</span><span class="request-field-value">${b.description}</span></div>
                         <div class="request-field"><span class="request-field-label">Submitted:</span><span class="request-field-value">${new Date(b.timestamp).toLocaleString()}</span></div>
                     </div>`).join('');
-            });
+            }
         }
 
         let pendingDeleteId=null, pendingDeleteType=null;
@@ -814,9 +1040,17 @@
         window.deleteBugReport=id=>{pendingDeleteId=id;pendingDeleteType='bug';document.getElementById('delete-confirm-modal').style.display='flex';};
 
         document.getElementById('executeDeleteItem').onclick=function(){
-            const dbRef=pendingDeleteType==='request'?ref(database,'gameRequests/'+pendingDeleteId):ref(database,'bugReports/'+pendingDeleteId);
-            remove(dbRef).catch(()=>{window.closeDeleteConfirm();document.getElementById('error-message').textContent='Failed to delete.';document.getElementById('error-modal').style.display='flex';});
-            window.closeDeleteConfirm(); pendingDeleteId=null; pendingDeleteType=null;
+            const type = pendingDeleteType;
+            const id = pendingDeleteId;
+            deleteLocalDBItem(type, id).then(()=>{
+                window.closeDeleteConfirm();
+                if(document.getElementById('admin-modal').style.display === 'flex') openAdminDashboard();
+            }).catch(()=>{
+                window.closeDeleteConfirm();
+                document.getElementById('error-message').textContent='Failed to delete.';
+                document.getElementById('error-modal').style.display='flex';
+            });
+            pendingDeleteId=null; pendingDeleteType=null;
         };
 
         document.getElementById('search-input').addEventListener('input',e=>searchGames(e.target.value));
